@@ -1,0 +1,23 @@
+# Description: Go package name (convention: lowercase).
+packageName: cd4pe
+
+# Description: Go package version.
+packageVersion: 1.0.0
+
+# Description: Hides the generation timestamp when files are generated.
+hideGenerationTimestamp: true
+
+# Description: whether the generated Go module is a submodule
+isGoSubmodule: false
+
+# Description: whether to include Go codegen comment to disable Go Lint and collapse by default GitHub in PRs and diffs
+withGoCodegenComment: false
+
+# Description: whether to include support for application/xml content type and include XML annotations in the model (works with libraries that provide support for JSON and XML)
+withXml: false
+
+# Description: Prefix enum with class name
+enumClassPrefix: false
+
+# Description: Add form or body parameters to the beginning of the parameter list.
+prependFormOrBodyParameters: false

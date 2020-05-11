@@ -1,0 +1,1416 @@
+openapi: 3.0.1
+info:
+  description: API for CD4PE V1
+  license:
+    name: Apache 2.0
+    url: https://puppet.com
+  title: CD4PE API V1
+  version: "1.0"
+externalDocs:
+  url: https://puppet.com/docs
+servers:
+- description: server 1
+  url: /api/v1
+security:
+- default: []
+paths:
+  /workspaces/{workspaceId}/controlrepos:
+    get:
+      description: Returns a list of Control Repos
+      operationId: getControlRepos
+      parameters:
+      - explode: false
+        in: path
+        name: workspaceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/ControlRepo'
+          description: A list of control repos
+        400:
+          description: Invalid ID supplied
+  /workspaces/{workspaceId}/integrations/pe:
+    get:
+      description: Returns a list of Puppet Enterprise connected to this workspace
+      operationId: listPEsForWorkspace
+      parameters:
+      - explode: false
+        in: path
+        name: workspaceId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: includeToken
+        required: false
+        schema:
+          type: boolean
+        style: form
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/PuppetEnterpriseCredentials'
+                type: array
+          description: A list of Puppet Enterprise instances.
+        400:
+          description: Invalid workspace id supplied
+        404:
+          description: workspace not found
+      summary: list PE instances connected to this workspace
+  /auth/token:
+    post:
+      operationId: createToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTokenRequest'
+      responses:
+        default:
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: An API token
+        400:
+          description: Invalid credentials provided
+      summary: Create a token associated with the passed in credentials
+  /user:
+    get:
+      operationId: getUserInfo
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginData'
+          description: The user
+        400:
+          description: Invalid ID supplied
+      summary: Get information about the user associated with this token
+components:
+  schemas:
+    ContainerBuildConfiguration:
+      properties:
+        buildCapabilities:
+          items:
+            type: string
+          type: array
+        buildVars:
+          items:
+            type: string
+          type: array
+        dockerFilePath:
+          type: string
+        noDind:
+          type: boolean
+        serverDomain:
+          type: string
+        vmArgs:
+          items:
+            type: string
+          type: array
+        vmImage:
+          type: string
+        vmProvider:
+          enum:
+          - DockerHub
+          - ECR
+          - Private
+          - GCR
+          - PublicDockerHub
+          type: string
+        vmPull:
+          type: boolean
+        noDind_asStr:
+          type: string
+          writeOnly: true
+        vmPull_asStr:
+          type: string
+          writeOnly: true
+      type: object
+    ControlRepo:
+      properties:
+        created:
+          format: int64
+          type: integer
+        description:
+          type: string
+        displayName:
+          type: string
+        domain:
+          type: string
+        lastCommitId:
+          type: string
+        lastDeploy:
+          $ref: '#/components/schemas/RollingDeploymentEvent'
+        lastImpactAnalysis:
+          $ref: '#/components/schemas/PEImpactAnalysisEvent'
+        lastDeployment:
+          $ref: '#/components/schemas/DeploymentAppEvent'
+        lastJob:
+          $ref: '#/components/schemas/VmJobInstanceEvent'
+        name:
+          type: string
+        srcRepoDisplayName:
+          type: string
+        srcRepoDisplayOwner:
+          type: string
+        srcRepoId:
+          type: string
+        srcRepoName:
+          type: string
+        srcRepoOwner:
+          type: string
+        srcRepoProvider:
+          enum:
+          - BITBUCKET
+          - BITBUCKETSERVER
+          - GITHUB
+          - GITHUBENTERPRISE
+          - GITLAB
+          - AZUREDEVOPS
+          type: string
+        repository:
+          $ref: '#/components/schemas/Repository'
+      type: object
+    ControlRepoId:
+      properties:
+        domain:
+          type: string
+        name:
+          type: string
+      type: object
+    DeploymentAppEvent:
+      properties:
+        appName:
+          type: string
+        containerName:
+          type: string
+        domain:
+          type: string
+        eventId:
+          format: int64
+          type: integer
+        eventName:
+          type: string
+        eventTime:
+          format: int64
+          type: integer
+        eventType:
+          enum:
+          - COMMIT
+          - BUILD
+          - RELEASE
+          - DEPLOY
+          - DOCKERIMAGE
+          - PUSH
+          - PULLREQUEST
+          - VMJOB
+          - ROLLINGDEPLOY
+          - PEIMPACTANALYSIS
+          - PEMODULEDEPLOYMENT
+          - DEPLOYMENT
+          type: string
+        maxChildEventId:
+          format: int64
+          type: integer
+        parentEventId:
+          format: int64
+          type: integer
+        userAccountId:
+          type: string
+        username:
+          type: string
+        authorName:
+          type: string
+        authorUsername:
+          type: string
+        branch:
+          type: string
+        commitId:
+          type: string
+        commitMsg:
+          type: string
+        commitUrl:
+          type: string
+        pullRequestDestBranch:
+          type: string
+        pullRequestHtmlUrl:
+          type: string
+        pullRequestId:
+          type: string
+        pullRequestNumber:
+          type: string
+        pullRequestSourceBranch:
+          type: string
+        repoId:
+          type: string
+        repoName:
+          type: string
+        repoOwner:
+          type: string
+        repoProvider:
+          type: string
+        repoType:
+          type: string
+        repoUrl:
+          type: string
+        webhookEventId:
+          type: string
+        artifactId:
+          type: string
+        artifactShortId:
+          type: string
+        buildId:
+          type: string
+        buildNum:
+          format: int64
+          type: integer
+        customReleaseVersion:
+          type: string
+        releaseVersion:
+          type: string
+        controlRepoName:
+          type: string
+        deploymentDescription:
+          type: string
+        deploymentEndTime:
+          format: int64
+          type: integer
+        deploymentId:
+          format: int64
+          type: integer
+        deploymentStartTime:
+          format: int64
+          type: integer
+        deploymentState:
+          enum:
+          - WAITING
+          - QUEUED
+          - CANCELLED
+          - RUNNING
+          - DONE
+          - FAILED
+          - ABORTED
+          - TIMEDOUT
+          - PENDING_APPROVAL
+          - APPROVED
+          - DECLINED
+          type: string
+        deploymentPlanName:
+          type: string
+        isAutoDeploy:
+          type: boolean
+        nodeGroupId:
+          type: string
+        nodeGroupName:
+          type: string
+        puppetEnterpriseServerName:
+          type: string
+        sha:
+          type: string
+        sourceBranch:
+          type: string
+        targetBranch:
+          type: string
+        buildNum_asStr:
+          type: string
+          writeOnly: true
+        eventTime_asStr:
+          type: string
+          writeOnly: true
+        eventId_asStr:
+          type: string
+          writeOnly: true
+        maxChildEventId_asStr:
+          type: string
+          writeOnly: true
+        parentEventId_asStr:
+          type: string
+          writeOnly: true
+      type: object
+    PEImpactAnalysisEnvironment:
+      properties:
+        deploymentType:
+          enum:
+          - DIRECT_MERGE
+          - TEMPORARY_BRANCH
+          - INCREMENTAL_BRANCH
+          - BLUE_GREEN_BRANCH
+          - CODE_ONLY_DEPLOY
+          - FEATURE_BRANCH
+          type: string
+        moduleImpactAnalysisControlRepoId:
+          $ref: '#/components/schemas/ControlRepoId'
+        nodeGroupId:
+          type: string
+        peCredentialsId:
+          $ref: '#/components/schemas/PuppetEnterpriseCredentialsId'
+        pipelineDestinationId:
+          type: string
+      type: object
+    PEImpactAnalysisEvent:
+      properties:
+        appName:
+          type: string
+        containerName:
+          type: string
+        domain:
+          type: string
+        eventId:
+          format: int64
+          type: integer
+        eventName:
+          type: string
+        eventTime:
+          format: int64
+          type: integer
+        eventType:
+          enum:
+          - COMMIT
+          - BUILD
+          - RELEASE
+          - DEPLOY
+          - DOCKERIMAGE
+          - PUSH
+          - PULLREQUEST
+          - VMJOB
+          - ROLLINGDEPLOY
+          - PEIMPACTANALYSIS
+          - PEMODULEDEPLOYMENT
+          - DEPLOYMENT
+          type: string
+        maxChildEventId:
+          format: int64
+          type: integer
+        parentEventId:
+          format: int64
+          type: integer
+        userAccountId:
+          type: string
+        username:
+          type: string
+        authorName:
+          type: string
+        authorUsername:
+          type: string
+        branch:
+          type: string
+        commitId:
+          type: string
+        commitMsg:
+          type: string
+        commitUrl:
+          type: string
+        pullRequestDestBranch:
+          type: string
+        pullRequestHtmlUrl:
+          type: string
+        pullRequestId:
+          type: string
+        pullRequestNumber:
+          type: string
+        pullRequestSourceBranch:
+          type: string
+        repoId:
+          type: string
+        repoName:
+          type: string
+        repoOwner:
+          type: string
+        repoProvider:
+          type: string
+        repoType:
+          type: string
+        repoUrl:
+          type: string
+        webhookEventId:
+          type: string
+        artifactId:
+          type: string
+        artifactShortId:
+          type: string
+        buildId:
+          type: string
+        buildNum:
+          format: int64
+          type: integer
+        customReleaseVersion:
+          type: string
+        releaseVersion:
+          type: string
+        controlRepoName:
+          type: string
+        endTime:
+          format: int64
+          type: integer
+        environments:
+          items:
+            $ref: '#/components/schemas/PEImpactAnalysisEnvironment'
+          type: array
+        impactAnalysisId:
+          format: int64
+          type: integer
+        isAutoDeploy:
+          type: boolean
+        moduleName:
+          type: string
+        sha:
+          type: string
+        sourceBranch:
+          type: string
+        startTime:
+          format: int64
+          type: integer
+        state:
+          enum:
+          - WAITING
+          - QUEUED
+          - CANCELLED
+          - RUNNING
+          - DONE
+          - FAILED
+          - ABORTED
+          - TIMEDOUT
+          - PENDING_APPROVAL
+          - APPROVED
+          - DECLINED
+          type: string
+        endTime_asStr:
+          type: string
+          writeOnly: true
+        isAutoDeploy_asStr:
+          type: string
+          writeOnly: true
+        startTime_asStr:
+          type: string
+          writeOnly: true
+        impactAnalysisId_asStr:
+          type: string
+          writeOnly: true
+        buildNum_asStr:
+          type: string
+          writeOnly: true
+        eventTime_asStr:
+          type: string
+          writeOnly: true
+        eventId_asStr:
+          type: string
+          writeOnly: true
+        maxChildEventId_asStr:
+          type: string
+          writeOnly: true
+        parentEventId_asStr:
+          type: string
+          writeOnly: true
+      type: object
+    PuppetEnterpriseCredentialsId:
+      properties:
+        domain:
+          type: string
+        name:
+          type: string
+      type: object
+    Repository:
+      properties:
+        displayName:
+          type: string
+        displayOwner:
+          type: string
+        name:
+          type: string
+        owner:
+          type: string
+        project:
+          type: string
+        provider:
+          enum:
+          - BITBUCKET
+          - BITBUCKETSERVER
+          - GITHUB
+          - GITHUBENTERPRISE
+          - GITLAB
+          - AZUREDEVOPS
+          type: string
+        repositoryId:
+          type: string
+        webhookId:
+          type: string
+      type: object
+    RollingDeploymentEvent:
+      properties:
+        appName:
+          type: string
+        containerName:
+          type: string
+        domain:
+          type: string
+        eventId:
+          format: int64
+          type: integer
+        eventName:
+          type: string
+        eventTime:
+          format: int64
+          type: integer
+        eventType:
+          enum:
+          - COMMIT
+          - BUILD
+          - RELEASE
+          - DEPLOY
+          - DOCKERIMAGE
+          - PUSH
+          - PULLREQUEST
+          - VMJOB
+          - ROLLINGDEPLOY
+          - PEIMPACTANALYSIS
+          - PEMODULEDEPLOYMENT
+          - DEPLOYMENT
+          type: string
+        maxChildEventId:
+          format: int64
+          type: integer
+        parentEventId:
+          format: int64
+          type: integer
+        userAccountId:
+          type: string
+        username:
+          type: string
+        authorName:
+          type: string
+        authorUsername:
+          type: string
+        branch:
+          type: string
+        commitId:
+          type: string
+        commitMsg:
+          type: string
+        commitUrl:
+          type: string
+        pullRequestDestBranch:
+          type: string
+        pullRequestHtmlUrl:
+          type: string
+        pullRequestId:
+          type: string
+        pullRequestNumber:
+          type: string
+        pullRequestSourceBranch:
+          type: string
+        repoId:
+          type: string
+        repoName:
+          type: string
+        repoOwner:
+          type: string
+        repoProvider:
+          type: string
+        repoType:
+          type: string
+        repoUrl:
+          type: string
+        webhookEventId:
+          type: string
+        artifactId:
+          type: string
+        artifactShortId:
+          type: string
+        buildId:
+          type: string
+        buildNum:
+          format: int64
+          type: integer
+        customReleaseVersion:
+          type: string
+        releaseVersion:
+          type: string
+        controlRepoName:
+          type: string
+        deploymentDescription:
+          type: string
+        deploymentEndTime:
+          format: int64
+          type: integer
+        deploymentId:
+          format: int64
+          type: integer
+        deploymentStartTime:
+          format: int64
+          type: integer
+        deploymentState:
+          enum:
+          - WAITING
+          - QUEUED
+          - CANCELLED
+          - RUNNING
+          - DONE
+          - FAILED
+          - ABORTED
+          - TIMEDOUT
+          - PENDING_APPROVAL
+          - APPROVED
+          - DECLINED
+          type: string
+        deploymentType:
+          enum:
+          - DIRECT_MERGE
+          - TEMPORARY_BRANCH
+          - INCREMENTAL_BRANCH
+          - BLUE_GREEN_BRANCH
+          - CODE_ONLY_DEPLOY
+          - FEATURE_BRANCH
+          type: string
+        isAutoDeploy:
+          type: boolean
+        nodeGrouId:
+          type: string
+        nodeGroupName:
+          type: string
+        puppetEnterpriseServerName:
+          type: string
+        sha:
+          type: string
+        sourceBranch:
+          type: string
+        targetBranch:
+          type: string
+        isAutoDeploy_asStr:
+          type: string
+          writeOnly: true
+        deploymentId_asStr:
+          type: string
+          writeOnly: true
+        deploymentStartTime_asStr:
+          type: string
+          writeOnly: true
+        deploymentEndTime_asStr:
+          type: string
+          writeOnly: true
+        buildNum_asStr:
+          type: string
+          writeOnly: true
+        eventTime_asStr:
+          type: string
+          writeOnly: true
+        eventId_asStr:
+          type: string
+          writeOnly: true
+        maxChildEventId_asStr:
+          type: string
+          writeOnly: true
+        parentEventId_asStr:
+          type: string
+          writeOnly: true
+      type: object
+    VmJobInstanceEvent:
+      properties:
+        appName:
+          type: string
+        containerName:
+          type: string
+        domain:
+          type: string
+        eventId:
+          format: int64
+          type: integer
+        eventName:
+          type: string
+        eventTime:
+          format: int64
+          type: integer
+        eventType:
+          enum:
+          - COMMIT
+          - BUILD
+          - RELEASE
+          - DEPLOY
+          - DOCKERIMAGE
+          - PUSH
+          - PULLREQUEST
+          - VMJOB
+          - ROLLINGDEPLOY
+          - PEIMPACTANALYSIS
+          - PEMODULEDEPLOYMENT
+          - DEPLOYMENT
+          type: string
+        maxChildEventId:
+          format: int64
+          type: integer
+        parentEventId:
+          format: int64
+          type: integer
+        userAccountId:
+          type: string
+        username:
+          type: string
+        authorName:
+          type: string
+        authorUsername:
+          type: string
+        branch:
+          type: string
+        commitId:
+          type: string
+        commitMsg:
+          type: string
+        commitUrl:
+          type: string
+        pullRequestDestBranch:
+          type: string
+        pullRequestHtmlUrl:
+          type: string
+        pullRequestId:
+          type: string
+        pullRequestNumber:
+          type: string
+        pullRequestSourceBranch:
+          type: string
+        repoId:
+          type: string
+        repoName:
+          type: string
+        repoOwner:
+          type: string
+        repoProvider:
+          type: string
+        repoType:
+          type: string
+        repoUrl:
+          type: string
+        webhookEventId:
+          type: string
+        artifactId:
+          type: string
+        artifactShortId:
+          type: string
+        buildId:
+          type: string
+        buildNum:
+          format: int64
+          type: integer
+        customReleaseVersion:
+          type: string
+        releaseVersion:
+          type: string
+        jobConfiguration:
+          $ref: '#/components/schemas/ContainerBuildConfiguration'
+        jobDescription:
+          type: string
+        jobEndTime:
+          format: int64
+          type: integer
+        jobName:
+          type: string
+        jobStartTime:
+          format: int64
+          type: integer
+        jobStatus:
+          type: string
+        vmJobInstanceId:
+          format: int64
+          type: integer
+        vmJobTemplateId:
+          format: int64
+          type: integer
+        vmJobTemplateId_asStr:
+          type: string
+          writeOnly: true
+        jobEndTime_asStr:
+          type: string
+          writeOnly: true
+        jobStartTime_asStr:
+          type: string
+          writeOnly: true
+        vmJobInstanceId_asStr:
+          type: string
+          writeOnly: true
+        buildNum_asStr:
+          type: string
+          writeOnly: true
+        eventTime_asStr:
+          type: string
+          writeOnly: true
+        eventId_asStr:
+          type: string
+          writeOnly: true
+        maxChildEventId_asStr:
+          type: string
+          writeOnly: true
+        parentEventId_asStr:
+          type: string
+          writeOnly: true
+      type: object
+    PuppetEnterpriseCredentials:
+      example:
+        protectedEnvironmentsCount: 0
+        puppetServerCertificate: puppetServerCertificate
+        useLegacyCompileEndpoint: true
+        certificate: certificate
+        puppetServerPrivateKey: puppetServerPrivateKey
+        tokenExpiration_asStr: tokenExpiration_asStr
+        orchestratorEndpoint: orchestratorEndpoint
+        token: token
+        puppetServerEndpoint: puppetServerEndpoint
+        puppetDBEndpoint: puppetDBEndpoint
+        tokenExpiration: 6
+        domain: domain
+        nodeClassifierEndpoint: nodeClassifierEndpoint
+        name: name
+        defaultBranchOverrideSupported_asStr: defaultBranchOverrideSupported_asStr
+        codeManagerEndpoint: codeManagerEndpoint
+        defaultBranchOverrideSupported: true
+        protectedEnvironmentsCount_asStr: protectedEnvironmentsCount_asStr
+        useLegacyCompileEndpoint_asStr: useLegacyCompileEndpoint_asStr
+      properties:
+        certificate:
+          type: string
+        codeManagerEndpoint:
+          type: string
+        defaultBranchOverrideSupported:
+          type: boolean
+        domain:
+          type: string
+        name:
+          type: string
+        nodeClassifierEndpoint:
+          type: string
+        orchestratorEndpoint:
+          type: string
+        protectedEnvironmentsCount:
+          format: int32
+          type: integer
+        puppetDBEndpoint:
+          type: string
+        puppetServerCertificate:
+          type: string
+        puppetServerEndpoint:
+          type: string
+        puppetServerPrivateKey:
+          type: string
+        token:
+          type: string
+        tokenExpiration:
+          format: int64
+          type: integer
+        useLegacyCompileEndpoint:
+          type: boolean
+        defaultBranchOverrideSupported_asStr:
+          type: string
+          writeOnly: true
+        protectedEnvironmentsCount_asStr:
+          type: string
+          writeOnly: true
+        tokenExpiration_asStr:
+          type: string
+          writeOnly: true
+        useLegacyCompileEndpoint_asStr:
+          type: string
+          writeOnly: true
+      type: object
+    CreateTokenRequest:
+      example:
+        password: password
+        email: email
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      type: object
+    LoginData:
+      example:
+        country: UNDEFINED
+        lastName: lastName
+        rangeKeyName: rangeKeyName
+        workspace: true
+        loginState: Active
+        emailVerificationStateCodeId: emailVerificationStateCodeId
+        failedLoginCount: 7
+        companyName: companyName
+        maxNodeCount: 5
+        planName: planName
+        maxTeamCount: 7
+        lastFailedLoginTime: 4
+        emailVerificationState: UnVerified
+        ldapDN: ldapDN
+        passwordHash: passwordHash
+        stripeSubscriptionId: stripeSubscriptionId
+        hashKeyName: hashKeyName
+        ccexpires:
+          month: JANUARY
+          year: 3
+          monthValue: 2
+          leapYear: true
+        countryCode: countryCode
+        nickname: nickname
+        resetPasswordKey:
+        - resetPasswordKey
+        - resetPasswordKey
+        workspaceName: workspaceName
+        maxProjectCount: 5
+        isWorkspace: true
+        hashKey: hashKey
+        loginStateCodeId: loginStateCodeId
+        successLoginsMaybeNull:
+        - successLoginsMaybeNull
+        - successLoginsMaybeNull
+        ddbccexpires: ddbccexpires
+        paymentFailed: paymentFailed
+        userId: userId
+        privateRepoCount: 6
+        defaultProductType: defaultProductType
+        rangeKey: rangeKey
+        maxPrivateRepoCount: 1
+        firstName: firstName
+        accountId: accountId
+        lastLoginTime: 9
+        selectedWorkspace: selectedWorkspace
+        planExpiration: 2
+        createTime: 0
+        domain: domain
+        gravatarEmail: gravatarEmail
+        name: name
+        successLogins:
+        - successLogins
+        - successLogins
+        nicknameLower: nicknameLower
+        stripeCustomerId: stripeCustomerId
+      properties:
+        domain:
+          type: string
+        name:
+          type: string
+        country:
+          enum:
+          - UNDEFINED
+          - AC
+          - AD
+          - AE
+          - AF
+          - AG
+          - AI
+          - AL
+          - AM
+          - AN
+          - AO
+          - AQ
+          - AR
+          - AS
+          - AT
+          - AU
+          - AW
+          - AX
+          - AZ
+          - BA
+          - BB
+          - BD
+          - BE
+          - BF
+          - BG
+          - BH
+          - BI
+          - BJ
+          - BL
+          - BM
+          - BN
+          - BO
+          - BQ
+          - BR
+          - BS
+          - BT
+          - BU
+          - BV
+          - BW
+          - BY
+          - BZ
+          - CA
+          - CC
+          - CD
+          - CF
+          - CG
+          - CH
+          - CI
+          - CK
+          - CL
+          - CM
+          - CN
+          - CO
+          - CP
+          - CR
+          - CS
+          - CU
+          - CV
+          - CW
+          - CX
+          - CY
+          - CZ
+          - DE
+          - DG
+          - DJ
+          - DK
+          - DM
+          - DO
+          - DZ
+          - EA
+          - EC
+          - EE
+          - EG
+          - EH
+          - ER
+          - ES
+          - ET
+          - EU
+          - EZ
+          - FI
+          - FJ
+          - FK
+          - FM
+          - FO
+          - FR
+          - FX
+          - GA
+          - GB
+          - GD
+          - GE
+          - GF
+          - GG
+          - GH
+          - GI
+          - GL
+          - GM
+          - GN
+          - GP
+          - GQ
+          - GR
+          - GS
+          - GT
+          - GU
+          - GW
+          - GY
+          - HK
+          - HM
+          - HN
+          - HR
+          - HT
+          - HU
+          - IC
+          - ID
+          - IE
+          - IL
+          - IM
+          - IN
+          - IO
+          - IQ
+          - IR
+          - IS
+          - IT
+          - JE
+          - JM
+          - JO
+          - JP
+          - KE
+          - KG
+          - KH
+          - KI
+          - KM
+          - KN
+          - KP
+          - KR
+          - KW
+          - KY
+          - KZ
+          - LA
+          - LB
+          - LC
+          - LI
+          - LK
+          - LR
+          - LS
+          - LT
+          - LU
+          - LV
+          - LY
+          - MA
+          - MC
+          - MD
+          - ME
+          - MF
+          - MG
+          - MH
+          - MK
+          - ML
+          - MM
+          - MN
+          - MO
+          - MP
+          - MQ
+          - MR
+          - MS
+          - MT
+          - MU
+          - MV
+          - MW
+          - MX
+          - MY
+          - MZ
+          - NA
+          - NC
+          - NE
+          - NF
+          - NG
+          - NI
+          - NL
+          - NO
+          - NP
+          - NR
+          - NT
+          - NU
+          - NZ
+          - OM
+          - PA
+          - PE
+          - PF
+          - PG
+          - PH
+          - PK
+          - PL
+          - PM
+          - PN
+          - PR
+          - PS
+          - PT
+          - PW
+          - PY
+          - QA
+          - RE
+          - RO
+          - RS
+          - RU
+          - RW
+          - SA
+          - SB
+          - SC
+          - SD
+          - SE
+          - SF
+          - SG
+          - SH
+          - SI
+          - SJ
+          - SK
+          - SL
+          - SM
+          - SN
+          - SO
+          - SR
+          - SS
+          - ST
+          - SU
+          - SV
+          - SX
+          - SY
+          - SZ
+          - TA
+          - TC
+          - TD
+          - TF
+          - TG
+          - TH
+          - TJ
+          - TK
+          - TL
+          - TM
+          - TN
+          - TO
+          - TP
+          - TR
+          - TT
+          - TV
+          - TW
+          - TZ
+          - UA
+          - UG
+          - UK
+          - UM
+          - US
+          - UY
+          - UZ
+          - VA
+          - VC
+          - VE
+          - VG
+          - VI
+          - VN
+          - VU
+          - WF
+          - WS
+          - XK
+          - YE
+          - YT
+          - YU
+          - ZA
+          - ZM
+          - ZR
+          - ZW
+          type: string
+        hashKey:
+          type: string
+        rangeKey:
+          type: string
+        passwordHash:
+          type: string
+        firstName:
+          type: string
+        userId:
+          type: string
+        accountId:
+          type: string
+        emailVerificationState:
+          enum:
+          - UnVerified
+          - Verified
+          type: string
+        nickname:
+          type: string
+        lastName:
+          type: string
+        companyName:
+          type: string
+        createTime:
+          format: int64
+          type: integer
+        loginState:
+          enum:
+          - Active
+          - Disabled
+          type: string
+        workspaceName:
+          type: string
+        isWorkspace:
+          type: boolean
+        workspace:
+          type: boolean
+        hashKeyName:
+          type: string
+        rangeKeyName:
+          type: string
+        privateRepoCount:
+          format: int32
+          type: integer
+        maxPrivateRepoCount:
+          format: int32
+          type: integer
+        maxProjectCount:
+          format: int32
+          type: integer
+        maxNodeCount:
+          format: int32
+          type: integer
+        planExpiration:
+          format: int64
+          type: integer
+        maxTeamCount:
+          format: int32
+          type: integer
+        planName:
+          type: string
+        ldapDN:
+          type: string
+        lastLoginTime:
+          format: int64
+          type: integer
+        gravatarEmail:
+          type: string
+        paymentFailed:
+          type: string
+        ccexpires:
+          $ref: '#/components/schemas/LoginData_ccexpires'
+        defaultProductType:
+          type: string
+        stripeCustomerId:
+          type: string
+        stripeSubscriptionId:
+          type: string
+        loginStateCodeId:
+          type: string
+        successLogins:
+          items:
+            type: string
+          type: array
+        successLoginsMaybeNull:
+          items:
+            type: string
+          type: array
+        emailVerificationStateCodeId:
+          type: string
+        resetPasswordKey:
+          items:
+            format: byte
+            type: string
+          type: array
+        nicknameLower:
+          type: string
+        lastFailedLoginTime:
+          format: int64
+          type: integer
+        failedLoginCount:
+          format: int32
+          type: integer
+        ddbccexpires:
+          type: string
+        selectedWorkspace:
+          type: string
+        countryCode:
+          type: string
+      type: object
+    LoginData_ccexpires:
+      example:
+        month: JANUARY
+        year: 3
+        monthValue: 2
+        leapYear: true
+      properties:
+        year:
+          format: int32
+          type: integer
+        month:
+          enum:
+          - JANUARY
+          - FEBRUARY
+          - MARCH
+          - APRIL
+          - MAY
+          - JUNE
+          - JULY
+          - AUGUST
+          - SEPTEMBER
+          - OCTOBER
+          - NOVEMBER
+          - DECEMBER
+          type: string
+        leapYear:
+          type: boolean
+        monthValue:
+          format: int32
+          type: integer
+  securitySchemes:
+    default:
+      in: header
+      name: Authorization
+      type: apiKey

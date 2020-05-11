@@ -1,0 +1,56 @@
+# LoginData
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**Domain** | **string** |  | [optional] 
+**Name** | **string** |  | [optional] 
+**Country** | **string** |  | [optional] 
+**HashKey** | **string** |  | [optional] 
+**RangeKey** | **string** |  | [optional] 
+**PasswordHash** | **string** |  | [optional] 
+**FirstName** | **string** |  | [optional] 
+**UserId** | **string** |  | [optional] 
+**AccountId** | **string** |  | [optional] 
+**EmailVerificationState** | **string** |  | [optional] 
+**Nickname** | **string** |  | [optional] 
+**LastName** | **string** |  | [optional] 
+**CompanyName** | **string** |  | [optional] 
+**CreateTime** | **int64** |  | [optional] 
+**LoginState** | **string** |  | [optional] 
+**WorkspaceName** | **string** |  | [optional] 
+**IsWorkspace** | **bool** |  | [optional] 
+**Workspace** | **bool** |  | [optional] 
+**HashKeyName** | **string** |  | [optional] 
+**RangeKeyName** | **string** |  | [optional] 
+**PrivateRepoCount** | **int32** |  | [optional] 
+**MaxPrivateRepoCount** | **int32** |  | [optional] 
+**MaxProjectCount** | **int32** |  | [optional] 
+**MaxNodeCount** | **int32** |  | [optional] 
+**PlanExpiration** | **int64** |  | [optional] 
+**MaxTeamCount** | **int32** |  | [optional] 
+**PlanName** | **string** |  | [optional] 
+**LdapDN** | **string** |  | [optional] 
+**LastLoginTime** | **int64** |  | [optional] 
+**GravatarEmail** | **string** |  | [optional] 
+**PaymentFailed** | **string** |  | [optional] 
+**Ccexpires** | [**LoginDataCcexpires**](LoginData_ccexpires.md) |  | [optional] 
+**DefaultProductType** | **string** |  | [optional] 
+**StripeCustomerId** | **string** |  | [optional] 
+**StripeSubscriptionId** | **string** |  | [optional] 
+**LoginStateCodeId** | **string** |  | [optional] 
+**SuccessLogins** | **[]string** |  | [optional] 
+**SuccessLoginsMaybeNull** | **[]string** |  | [optional] 
+**EmailVerificationStateCodeId** | **string** |  | [optional] 
+**ResetPasswordKey** | **[]string** |  | [optional] 
+**NicknameLower** | **string** |  | [optional] 
+**LastFailedLoginTime** | **int64** |  | [optional] 
+**FailedLoginCount** | **int32** |  | [optional] 
+**Ddbccexpires** | **string** |  | [optional] 
+**SelectedWorkspace** | **string** |  | [optional] 
+**CountryCode** | **string** |  | [optional] 
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+
