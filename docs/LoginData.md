@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 **RangeKey** | **string** |  | [optional] 
 **PasswordHash** | **string** |  | [optional] 
 **FirstName** | **string** |  | [optional] 
-**UserId** | **string** |  | [optional] 
+**Id** | **int64** |  | [optional] 
 **AccountId** | **string** |  | [optional] 
 **EmailVerificationState** | **string** |  | [optional] 
 **Nickname** | **string** |  | [optional] 

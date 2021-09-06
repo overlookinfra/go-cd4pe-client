@@ -1,1353 +1,1476 @@
 {
-  "openapi" : "3.0.1",
-  "info" : {
-    "title" : "CD4PE API V1",
-    "description" : "API for CD4PE V1",
-    "license" : {
-      "name" : "Apache 2.0",
-      "url" : "https://puppet.com"
+  "openapi": "3.0.1",
+  "info": {
+    "title": "CD4PE API V1",
+    "description": "API for CD4PE V1",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://puppet.com"
     },
-    "version" : "1.0"
+    "version": "1.0"
   },
-  "externalDocs" : {
-    "url" : "https://puppet.com/docs"
+  "externalDocs": {
+    "url": "https://puppet.com/docs"
   },
   "servers" : [ {
-    "url" : "/api/v1",
-    "description" : "server 1",
-    "variables" : { }
+      "url": "/api/v1",
+      "description": "server 1",
+      "variables": {}
   } ],
   "security" : [ {
-    "default" : [ ]
+      "default": []
   } ],
-  "paths" : {
-    "/workspaces/{workspaceId}/controlrepos" : {
-      "get" : {
-        "description" : "Returns a list of Control Repos",
-        "operationId" : "getControlRepos",
+  "paths": {
+    "/workspaces/{workspaceId}/controlrepos": {
+      "get": {
+        "description": "Returns a list of Control Repos",
+        "operationId": "getControlRepos",
         "parameters" : [ {
-          "name" : "workspaceId",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
         } ],
-        "responses" : {
-          "default" : {
-            "description" : "A list of control repos",
-            "content" : {
-              "application/json" : {
-                "schema" : {
+        "responses": {
+          "default": {
+            "description": "A list of control repos",
+            "content": {
+              "application/json": {
+                "schema": {
                   "allOf" : [ {
-                    "$ref" : "#/components/schemas/ControlRepo"
+                      "$ref": "#/components/schemas/ControlRepo"
                   } ]
                 }
               }
             }
           },
-          "400" : {
-            "description" : "Invalid ID supplied"
+          "400": {
+            "description": "Invalid ID supplied"
           }
         }
       }
     },
-    "/workspaces/{workspaceId}/integrations/pe" : {
-      "get" : {
-        "summary" : "list PE instances connected to this workspace",
-        "description" : "Returns a list of Puppet Enterprise connected to this workspace",
-        "operationId" : "listPEsForWorkspace",
+    "/workspaces/{workspaceId}/integrations/pe": {
+      "get": {
+        "summary": "list PE instances connected to this workspace",
+        "description": "Returns a list of Puppet Enterprise connected to this workspace",
+        "operationId": "listPEsForWorkspace",
         "parameters" : [ {
-          "name" : "workspaceId",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
+            "name": "workspaceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
         }, {
-          "name" : "includeToken",
-          "in" : "query",
-          "schema" : {
-            "type" : "boolean"
-          }
+            "name": "includeToken",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
         } ],
-        "responses" : {
-          "default" : {
-            "description" : "A list of Puppet Enterprise instances.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/PuppetEnterpriseCredentials"
+        "responses": {
+          "default": {
+            "description": "A list of Puppet Enterprise instances.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PuppetEnterpriseCredentials"
                   }
                 }
               }
             }
           },
-          "400" : {
-            "description" : "Invalid workspace id supplied"
+          "400": {
+            "description": "Invalid workspace id supplied"
           },
-          "404" : {
-            "description" : "workspace not found"
+          "404": {
+            "description": "workspace not found"
           }
         }
       }
     },
-    "/auth/token" : {
-      "post" : {
-        "summary" : "Create a token associated with the passed in credentials",
-        "operationId" : "createToken",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/CreateTokenRequest"
+    "/auth/token": {
+      "post": {
+        "summary": "Create a token associated with the passed in credentials",
+        "operationId": "createToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTokenRequest"
               }
             }
           }
         },
-        "responses" : {
-          "default" : {
-            "description" : "An API token",
-            "content" : {
-              "text/plain" : {
-                "schema" : {
-                  "type" : "string"
+        "responses": {
+          "default": {
+            "description": "An API token",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }
           },
-          "400" : {
-            "description" : "Invalid credentials provided"
+          "400": {
+            "description": "Invalid credentials provided"
           }
         }
       }
     },
-    "/user" : {
-      "get" : {
-        "summary" : "Get information about the user associated with this token",
-        "operationId" : "getUserInfo",
-        "responses" : {
-          "default" : {
-            "description" : "The user",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/LoginData"
+    "/user": {
+      "get": {
+        "summary": "Get information about the user associated with this token",
+        "operationId": "getUserInfo",
+        "responses": {
+          "default": {
+            "description": "The user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentUserDetails"
                 }
               }
             }
           },
-          "400" : {
-            "description" : "Invalid ID supplied"
+          "400": {
+            "description": "Invalid ID supplied"
+          }
+        }
+      }
+    },
+    "/permitted": {
+      "post": {
+        "summary": "Evaluate permissions for a user",
+        "operationId": "evaluatePermissions",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluatePermissionsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "Array of permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PermittedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid credentials provided"
           }
         }
       }
     }
   },
-  "components" : {
-    "schemas" : {
-      "ContainerBuildConfiguration" : {
-        "type" : "object",
-        "properties" : {
-          "buildCapabilities" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
+  "components": {
+    "schemas": {
+      "ContainerBuildConfiguration": {
+        "type": "object",
+        "properties": {
+          "buildCapabilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           },
-          "buildVars" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
+          "buildVars": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           },
-          "dockerFilePath" : {
-            "type" : "string"
+          "dockerFilePath": {
+            "type": "string"
           },
-          "noDind" : {
-            "type" : "boolean"
+          "noDind": {
+            "type": "boolean"
           },
-          "serverDomain" : {
-            "type" : "string"
+          "serverDomain": {
+            "type": "string"
           },
-          "vmArgs" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
+          "vmArgs": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           },
-          "vmImage" : {
-            "type" : "string"
+          "vmImage": {
+            "type": "string"
           },
-          "vmProvider" : {
-            "type" : "string",
-            "enum" : [ "DockerHub", "ECR", "Private", "GCR", "PublicDockerHub" ]
+          "vmProvider": {
+            "type": "string",
+            "enum": [
+              "DockerHub",
+              "ECR",
+              "Private",
+              "GCR",
+              "PublicDockerHub"
+            ]
           },
-          "vmPull" : {
-            "type" : "boolean"
+          "vmPull": {
+            "type": "boolean"
           },
-          "noDind_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "noDind_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "vmPull_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "vmPull_asStr": {
+            "type": "string",
+            "writeOnly": true
           }
         }
       },
-      "ControlRepo" : {
-        "type" : "object",
-        "properties" : {
-          "created" : {
-            "type" : "integer",
-            "format" : "int64"
+      "ControlRepo": {
+        "type": "object",
+        "properties": {
+          "created": {
+            "type": "integer",
+            "format": "int64"
           },
-          "description" : {
-            "type" : "string"
+          "description": {
+            "type": "string"
           },
-          "displayName" : {
-            "type" : "string"
+          "displayName": {
+            "type": "string"
           },
-          "domain" : {
-            "type" : "string"
+          "domain": {
+            "type": "string"
           },
-          "lastCommitId" : {
-            "type" : "string"
+          "lastCommitId": {
+            "type": "string"
           },
-          "lastDeploy" : {
-            "$ref" : "#/components/schemas/RollingDeploymentEvent"
+          "lastDeploy": {
+            "$ref": "#/components/schemas/RollingDeploymentEvent"
           },
-          "lastImpactAnalysis" : {
-            "$ref" : "#/components/schemas/PEImpactAnalysisEvent"
+          "lastImpactAnalysis": {
+            "$ref": "#/components/schemas/PEImpactAnalysisEvent"
           },
-          "lastDeployment" : {
-            "$ref" : "#/components/schemas/DeploymentAppEvent"
+          "lastDeployment": {
+            "$ref": "#/components/schemas/DeploymentAppEvent"
           },
-          "lastJob" : {
-            "$ref" : "#/components/schemas/VmJobInstanceEvent"
+          "lastJob": {
+            "$ref": "#/components/schemas/VmJobInstanceEvent"
           },
-          "name" : {
-            "type" : "string"
+          "name": {
+            "type": "string"
           },
-          "srcRepoDisplayName" : {
-            "type" : "string"
+          "srcRepoDisplayName": {
+            "type": "string"
           },
-          "srcRepoDisplayOwner" : {
-            "type" : "string"
+          "srcRepoDisplayOwner": {
+            "type": "string"
           },
-          "srcRepoId" : {
-            "type" : "string"
+          "srcRepoId": {
+            "type": "string"
           },
-          "srcRepoName" : {
-            "type" : "string"
+          "srcRepoName": {
+            "type": "string"
           },
-          "srcRepoOwner" : {
-            "type" : "string"
+          "srcRepoOwner": {
+            "type": "string"
           },
-          "srcRepoProvider" : {
-            "type" : "string",
-            "enum" : [ "BITBUCKET", "BITBUCKETSERVER", "GITHUB", "GITHUBENTERPRISE", "GITLAB", "AZUREDEVOPS" ]
+          "srcRepoProvider": {
+            "type": "string",
+            "enum": [
+              "BITBUCKET",
+              "BITBUCKETSERVER",
+              "GITHUB",
+              "GITHUBENTERPRISE",
+              "GITLAB",
+              "AZUREDEVOPS"
+            ]
           },
-          "repository" : {
-            "$ref" : "#/components/schemas/Repository"
+          "repository": {
+            "$ref": "#/components/schemas/Repository"
           }
         }
       },
-      "ControlRepoId" : {
-        "type" : "object",
-        "properties" : {
-          "domain" : {
-            "type" : "string"
+      "ControlRepoId": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string"
           },
-          "name" : {
-            "type" : "string"
+          "name": {
+            "type": "string"
           }
         }
       },
-      "DeploymentAppEvent" : {
-        "type" : "object",
-        "properties" : {
-          "appName" : {
-            "type" : "string"
+      "DeploymentAppEvent": {
+        "type": "object",
+        "properties": {
+          "appName": {
+            "type": "string"
           },
-          "containerName" : {
-            "type" : "string"
+          "containerName": {
+            "type": "string"
           },
-          "domain" : {
-            "type" : "string"
+          "domain": {
+            "type": "string"
           },
-          "eventId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "eventId": {
+            "type": "integer",
+            "format": "int64"
           },
-          "eventName" : {
-            "type" : "string"
+          "eventName": {
+            "type": "string"
           },
-          "eventTime" : {
-            "type" : "integer",
-            "format" : "int64"
+          "eventTime": {
+            "type": "integer",
+            "format": "int64"
           },
-          "eventType" : {
-            "type" : "string",
-            "enum" : [ "COMMIT", "BUILD", "RELEASE", "DEPLOY", "DOCKERIMAGE", "PUSH", "PULLREQUEST", "VMJOB", "ROLLINGDEPLOY", "PEIMPACTANALYSIS", "PEMODULEDEPLOYMENT", "DEPLOYMENT" ]
+          "eventType": {
+            "type": "string",
+            "enum": [
+              "COMMIT",
+              "BUILD",
+              "RELEASE",
+              "DEPLOY",
+              "DOCKERIMAGE",
+              "PUSH",
+              "PULLREQUEST",
+              "VMJOB",
+              "ROLLINGDEPLOY",
+              "PEIMPACTANALYSIS",
+              "PEMODULEDEPLOYMENT",
+              "DEPLOYMENT"
+            ]
           },
-          "maxChildEventId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "maxChildEventId": {
+            "type": "integer",
+            "format": "int64"
           },
-          "parentEventId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "parentEventId": {
+            "type": "integer",
+            "format": "int64"
           },
-          "userAccountId" : {
-            "type" : "string"
+          "userAccountId": {
+            "type": "string"
           },
-          "username" : {
-            "type" : "string"
+          "username": {
+            "type": "string"
           },
-          "authorName" : {
-            "type" : "string"
+          "authorName": {
+            "type": "string"
           },
-          "authorUsername" : {
-            "type" : "string"
+          "authorUsername": {
+            "type": "string"
           },
-          "branch" : {
-            "type" : "string"
+          "branch": {
+            "type": "string"
           },
-          "commitId" : {
-            "type" : "string"
+          "commitId": {
+            "type": "string"
           },
-          "commitMsg" : {
-            "type" : "string"
+          "commitMsg": {
+            "type": "string"
           },
-          "commitUrl" : {
-            "type" : "string"
+          "commitUrl": {
+            "type": "string"
           },
-          "pullRequestDestBranch" : {
-            "type" : "string"
+          "pullRequestDestBranch": {
+            "type": "string"
           },
-          "pullRequestHtmlUrl" : {
-            "type" : "string"
+          "pullRequestHtmlUrl": {
+            "type": "string"
           },
-          "pullRequestId" : {
-            "type" : "string"
+          "pullRequestId": {
+            "type": "string"
           },
-          "pullRequestNumber" : {
-            "type" : "string"
+          "pullRequestNumber": {
+            "type": "string"
           },
-          "pullRequestSourceBranch" : {
-            "type" : "string"
+          "pullRequestSourceBranch": {
+            "type": "string"
           },
-          "repoId" : {
-            "type" : "string"
+          "repoId": {
+            "type": "string"
           },
-          "repoName" : {
-            "type" : "string"
+          "repoName": {
+            "type": "string"
           },
-          "repoOwner" : {
-            "type" : "string"
+          "repoOwner": {
+            "type": "string"
           },
-          "repoProvider" : {
-            "type" : "string"
+          "repoProvider": {
+            "type": "string"
           },
-          "repoType" : {
-            "type" : "string"
+          "repoType": {
+            "type": "string"
           },
-          "repoUrl" : {
-            "type" : "string"
+          "repoUrl": {
+            "type": "string"
           },
-          "webhookEventId" : {
-            "type" : "string"
+          "webhookEventId": {
+            "type": "string"
           },
-          "artifactId" : {
-            "type" : "string"
+          "artifactId": {
+            "type": "string"
           },
-          "artifactShortId" : {
-            "type" : "string"
+          "artifactShortId": {
+            "type": "string"
           },
-          "buildId" : {
-            "type" : "string"
+          "buildId": {
+            "type": "string"
           },
-          "buildNum" : {
-            "type" : "integer",
-            "format" : "int64"
+          "buildNum": {
+            "type": "integer",
+            "format": "int64"
           },
-          "customReleaseVersion" : {
-            "type" : "string"
+          "customReleaseVersion": {
+            "type": "string"
           },
-          "releaseVersion" : {
-            "type" : "string"
+          "releaseVersion": {
+            "type": "string"
           },
-          "controlRepoName" : {
-            "type" : "string"
+          "controlRepoName": {
+            "type": "string"
           },
-          "deploymentDescription" : {
-            "type" : "string"
+          "deploymentDescription": {
+            "type": "string"
           },
-          "deploymentEndTime" : {
-            "type" : "integer",
-            "format" : "int64"
+          "deploymentEndTime": {
+            "type": "integer",
+            "format": "int64"
           },
-          "deploymentId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "deploymentId": {
+            "type": "integer",
+            "format": "int64"
           },
-          "deploymentStartTime" : {
-            "type" : "integer",
-            "format" : "int64"
+          "deploymentStartTime": {
+            "type": "integer",
+            "format": "int64"
           },
-          "deploymentState" : {
-            "type" : "string",
-            "enum" : [ "WAITING", "QUEUED", "CANCELLED", "RUNNING", "DONE", "FAILED", "ABORTED", "TIMEDOUT", "PENDING_APPROVAL", "APPROVED", "DECLINED" ]
+          "deploymentState": {
+            "type": "string",
+            "enum": [
+              "WAITING",
+              "QUEUED",
+              "CANCELLED",
+              "RUNNING",
+              "DONE",
+              "FAILED",
+              "ABORTED",
+              "TIMEDOUT",
+              "PENDING_APPROVAL",
+              "APPROVED",
+              "DECLINED"
+            ]
           },
-          "deploymentPlanName" : {
-            "type" : "string"
+          "deploymentPlanName": {
+            "type": "string"
           },
-          "isAutoDeploy" : {
-            "type" : "boolean"
+          "isAutoDeploy": {
+            "type": "boolean"
           },
-          "nodeGroupId" : {
-            "type" : "string"
+          "nodeGroupId": {
+            "type": "string"
           },
-          "nodeGroupName" : {
-            "type" : "string"
+          "nodeGroupName": {
+            "type": "string"
           },
-          "puppetEnterpriseServerName" : {
-            "type" : "string"
+          "puppetEnterpriseServerName": {
+            "type": "string"
           },
-          "sha" : {
-            "type" : "string"
+          "sha": {
+            "type": "string"
           },
-          "sourceBranch" : {
-            "type" : "string"
+          "sourceBranch": {
+            "type": "string"
           },
-          "targetBranch" : {
-            "type" : "string"
+          "targetBranch": {
+            "type": "string"
           },
-          "buildNum_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "buildNum_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "eventTime_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "eventTime_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "eventId_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "eventId_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "maxChildEventId_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "maxChildEventId_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "parentEventId_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "parentEventId_asStr": {
+            "type": "string",
+            "writeOnly": true
           }
         }
       },
-      "PEImpactAnalysisEnvironment" : {
-        "type" : "object",
-        "properties" : {
-          "deploymentType" : {
-            "type" : "string",
-            "enum" : [ "DIRECT_MERGE", "TEMPORARY_BRANCH", "INCREMENTAL_BRANCH", "BLUE_GREEN_BRANCH", "CODE_ONLY_DEPLOY", "FEATURE_BRANCH" ]
+      "PEImpactAnalysisEnvironment": {
+        "type": "object",
+        "properties": {
+          "deploymentType": {
+            "type": "string",
+            "enum": [
+              "DIRECT_MERGE",
+              "TEMPORARY_BRANCH",
+              "INCREMENTAL_BRANCH",
+              "BLUE_GREEN_BRANCH",
+              "CODE_ONLY_DEPLOY",
+              "FEATURE_BRANCH"
+            ]
           },
-          "moduleImpactAnalysisControlRepoId" : {
-            "$ref" : "#/components/schemas/ControlRepoId"
+          "moduleImpactAnalysisControlRepoId": {
+            "$ref": "#/components/schemas/ControlRepoId"
           },
-          "nodeGroupId" : {
-            "type" : "string"
+          "nodeGroupId": {
+            "type": "string"
           },
-          "peCredentialsId" : {
-            "$ref" : "#/components/schemas/PuppetEnterpriseCredentialsId"
+          "peCredentialsId": {
+            "$ref": "#/components/schemas/PuppetEnterpriseCredentialsId"
           },
-          "pipelineDestinationId" : {
-            "type" : "string"
+          "pipelineDestinationId": {
+            "type": "string"
           }
         }
       },
-      "PEImpactAnalysisEvent" : {
-        "type" : "object",
-        "properties" : {
-          "appName" : {
-            "type" : "string"
+      "PEImpactAnalysisEvent": {
+        "type": "object",
+        "properties": {
+          "appName": {
+            "type": "string"
           },
-          "containerName" : {
-            "type" : "string"
+          "containerName": {
+            "type": "string"
           },
-          "domain" : {
-            "type" : "string"
+          "domain": {
+            "type": "string"
           },
-          "eventId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "eventId": {
+            "type": "integer",
+            "format": "int64"
           },
-          "eventName" : {
-            "type" : "string"
+          "eventName": {
+            "type": "string"
           },
-          "eventTime" : {
-            "type" : "integer",
-            "format" : "int64"
+          "eventTime": {
+            "type": "integer",
+            "format": "int64"
           },
-          "eventType" : {
-            "type" : "string",
-            "enum" : [ "COMMIT", "BUILD", "RELEASE", "DEPLOY", "DOCKERIMAGE", "PUSH", "PULLREQUEST", "VMJOB", "ROLLINGDEPLOY", "PEIMPACTANALYSIS", "PEMODULEDEPLOYMENT", "DEPLOYMENT" ]
+          "eventType": {
+            "type": "string",
+            "enum": [
+              "COMMIT",
+              "BUILD",
+              "RELEASE",
+              "DEPLOY",
+              "DOCKERIMAGE",
+              "PUSH",
+              "PULLREQUEST",
+              "VMJOB",
+              "ROLLINGDEPLOY",
+              "PEIMPACTANALYSIS",
+              "PEMODULEDEPLOYMENT",
+              "DEPLOYMENT"
+            ]
           },
-          "maxChildEventId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "maxChildEventId": {
+            "type": "integer",
+            "format": "int64"
           },
-          "parentEventId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "parentEventId": {
+            "type": "integer",
+            "format": "int64"
           },
-          "userAccountId" : {
-            "type" : "string"
+          "userAccountId": {
+            "type": "string"
           },
-          "username" : {
-            "type" : "string"
+          "username": {
+            "type": "string"
           },
-          "authorName" : {
-            "type" : "string"
+          "authorName": {
+            "type": "string"
           },
-          "authorUsername" : {
-            "type" : "string"
+          "authorUsername": {
+            "type": "string"
           },
-          "branch" : {
-            "type" : "string"
+          "branch": {
+            "type": "string"
           },
-          "commitId" : {
-            "type" : "string"
+          "commitId": {
+            "type": "string"
           },
-          "commitMsg" : {
-            "type" : "string"
+          "commitMsg": {
+            "type": "string"
           },
-          "commitUrl" : {
-            "type" : "string"
+          "commitUrl": {
+            "type": "string"
           },
-          "pullRequestDestBranch" : {
-            "type" : "string"
+          "pullRequestDestBranch": {
+            "type": "string"
           },
-          "pullRequestHtmlUrl" : {
-            "type" : "string"
+          "pullRequestHtmlUrl": {
+            "type": "string"
           },
-          "pullRequestId" : {
-            "type" : "string"
+          "pullRequestId": {
+            "type": "string"
           },
-          "pullRequestNumber" : {
-            "type" : "string"
+          "pullRequestNumber": {
+            "type": "string"
           },
-          "pullRequestSourceBranch" : {
-            "type" : "string"
+          "pullRequestSourceBranch": {
+            "type": "string"
           },
-          "repoId" : {
-            "type" : "string"
+          "repoId": {
+            "type": "string"
           },
-          "repoName" : {
-            "type" : "string"
+          "repoName": {
+            "type": "string"
           },
-          "repoOwner" : {
-            "type" : "string"
+          "repoOwner": {
+            "type": "string"
           },
-          "repoProvider" : {
-            "type" : "string"
+          "repoProvider": {
+            "type": "string"
           },
-          "repoType" : {
-            "type" : "string"
+          "repoType": {
+            "type": "string"
           },
-          "repoUrl" : {
-            "type" : "string"
+          "repoUrl": {
+            "type": "string"
           },
-          "webhookEventId" : {
-            "type" : "string"
+          "webhookEventId": {
+            "type": "string"
           },
-          "artifactId" : {
-            "type" : "string"
+          "artifactId": {
+            "type": "string"
           },
-          "artifactShortId" : {
-            "type" : "string"
+          "artifactShortId": {
+            "type": "string"
           },
-          "buildId" : {
-            "type" : "string"
+          "buildId": {
+            "type": "string"
           },
-          "buildNum" : {
-            "type" : "integer",
-            "format" : "int64"
+          "buildNum": {
+            "type": "integer",
+            "format": "int64"
           },
-          "customReleaseVersion" : {
-            "type" : "string"
+          "customReleaseVersion": {
+            "type": "string"
           },
-          "releaseVersion" : {
-            "type" : "string"
+          "releaseVersion": {
+            "type": "string"
           },
-          "controlRepoName" : {
-            "type" : "string"
+          "controlRepoName": {
+            "type": "string"
           },
-          "endTime" : {
-            "type" : "integer",
-            "format" : "int64"
+          "endTime": {
+            "type": "integer",
+            "format": "int64"
           },
-          "environments" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/PEImpactAnalysisEnvironment"
+          "environments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PEImpactAnalysisEnvironment"
             }
           },
-          "impactAnalysisId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "impactAnalysisId": {
+            "type": "integer",
+            "format": "int64"
           },
-          "isAutoDeploy" : {
-            "type" : "boolean"
+          "isAutoDeploy": {
+            "type": "boolean"
           },
-          "moduleName" : {
-            "type" : "string"
+          "moduleName": {
+            "type": "string"
           },
-          "sha" : {
-            "type" : "string"
+          "sha": {
+            "type": "string"
           },
-          "sourceBranch" : {
-            "type" : "string"
+          "sourceBranch": {
+            "type": "string"
           },
-          "startTime" : {
-            "type" : "integer",
-            "format" : "int64"
+          "startTime": {
+            "type": "integer",
+            "format": "int64"
           },
-          "state" : {
-            "type" : "string",
-            "enum" : [ "WAITING", "QUEUED", "CANCELLED", "RUNNING", "DONE", "FAILED", "ABORTED", "TIMEDOUT", "PENDING_APPROVAL", "APPROVED", "DECLINED" ]
+          "state": {
+            "type": "string",
+            "enum": [
+              "WAITING",
+              "QUEUED",
+              "CANCELLED",
+              "RUNNING",
+              "DONE",
+              "FAILED",
+              "ABORTED",
+              "TIMEDOUT",
+              "PENDING_APPROVAL",
+              "APPROVED",
+              "DECLINED"
+            ]
           },
-          "endTime_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "endTime_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "isAutoDeploy_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "isAutoDeploy_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "startTime_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "startTime_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "impactAnalysisId_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "impactAnalysisId_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "buildNum_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "buildNum_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "eventTime_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "eventTime_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "eventId_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "eventId_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "maxChildEventId_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "maxChildEventId_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "parentEventId_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "parentEventId_asStr": {
+            "type": "string",
+            "writeOnly": true
           }
         }
       },
-      "PuppetEnterpriseCredentialsId" : {
-        "type" : "object",
-        "properties" : {
-          "domain" : {
-            "type" : "string"
+      "PuppetEnterpriseCredentialsId": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string"
           },
-          "name" : {
-            "type" : "string"
+          "name": {
+            "type": "string"
           }
         }
       },
-      "Repository" : {
-        "type" : "object",
-        "properties" : {
-          "displayName" : {
-            "type" : "string"
+      "Repository": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "type": "string"
           },
-          "displayOwner" : {
-            "type" : "string"
+          "displayOwner": {
+            "type": "string"
           },
-          "name" : {
-            "type" : "string"
+          "name": {
+            "type": "string"
           },
-          "owner" : {
-            "type" : "string"
+          "owner": {
+            "type": "string"
           },
-          "project" : {
-            "type" : "string"
+          "project": {
+            "type": "string"
           },
-          "provider" : {
-            "type" : "string",
-            "enum" : [ "BITBUCKET", "BITBUCKETSERVER", "GITHUB", "GITHUBENTERPRISE", "GITLAB", "AZUREDEVOPS" ]
+          "provider": {
+            "type": "string",
+            "enum": [
+              "BITBUCKET",
+              "BITBUCKETSERVER",
+              "GITHUB",
+              "GITHUBENTERPRISE",
+              "GITLAB",
+              "AZUREDEVOPS"
+            ]
           },
-          "repositoryId" : {
-            "type" : "string"
+          "repositoryId": {
+            "type": "string"
           },
-          "webhookId" : {
-            "type" : "string"
+          "webhookId": {
+            "type": "string"
           }
         }
       },
-      "RollingDeploymentEvent" : {
-        "type" : "object",
-        "properties" : {
-          "appName" : {
-            "type" : "string"
+      "RollingDeploymentEvent": {
+        "type": "object",
+        "properties": {
+          "appName": {
+            "type": "string"
           },
-          "containerName" : {
-            "type" : "string"
+          "containerName": {
+            "type": "string"
           },
-          "domain" : {
-            "type" : "string"
+          "domain": {
+            "type": "string"
           },
-          "eventId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "eventId": {
+            "type": "integer",
+            "format": "int64"
           },
-          "eventName" : {
-            "type" : "string"
+          "eventName": {
+            "type": "string"
           },
-          "eventTime" : {
-            "type" : "integer",
-            "format" : "int64"
+          "eventTime": {
+            "type": "integer",
+            "format": "int64"
           },
-          "eventType" : {
-            "type" : "string",
-            "enum" : [ "COMMIT", "BUILD", "RELEASE", "DEPLOY", "DOCKERIMAGE", "PUSH", "PULLREQUEST", "VMJOB", "ROLLINGDEPLOY", "PEIMPACTANALYSIS", "PEMODULEDEPLOYMENT", "DEPLOYMENT" ]
+          "eventType": {
+            "type": "string",
+            "enum": [
+              "COMMIT",
+              "BUILD",
+              "RELEASE",
+              "DEPLOY",
+              "DOCKERIMAGE",
+              "PUSH",
+              "PULLREQUEST",
+              "VMJOB",
+              "ROLLINGDEPLOY",
+              "PEIMPACTANALYSIS",
+              "PEMODULEDEPLOYMENT",
+              "DEPLOYMENT"
+            ]
           },
-          "maxChildEventId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "maxChildEventId": {
+            "type": "integer",
+            "format": "int64"
           },
-          "parentEventId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "parentEventId": {
+            "type": "integer",
+            "format": "int64"
           },
-          "userAccountId" : {
-            "type" : "string"
+          "userAccountId": {
+            "type": "string"
           },
-          "username" : {
-            "type" : "string"
+          "username": {
+            "type": "string"
           },
-          "authorName" : {
-            "type" : "string"
+          "authorName": {
+            "type": "string"
           },
-          "authorUsername" : {
-            "type" : "string"
+          "authorUsername": {
+            "type": "string"
           },
-          "branch" : {
-            "type" : "string"
+          "branch": {
+            "type": "string"
           },
-          "commitId" : {
-            "type" : "string"
+          "commitId": {
+            "type": "string"
           },
-          "commitMsg" : {
-            "type" : "string"
+          "commitMsg": {
+            "type": "string"
           },
-          "commitUrl" : {
-            "type" : "string"
+          "commitUrl": {
+            "type": "string"
           },
-          "pullRequestDestBranch" : {
-            "type" : "string"
+          "pullRequestDestBranch": {
+            "type": "string"
           },
-          "pullRequestHtmlUrl" : {
-            "type" : "string"
+          "pullRequestHtmlUrl": {
+            "type": "string"
           },
-          "pullRequestId" : {
-            "type" : "string"
+          "pullRequestId": {
+            "type": "string"
           },
-          "pullRequestNumber" : {
-            "type" : "string"
+          "pullRequestNumber": {
+            "type": "string"
           },
-          "pullRequestSourceBranch" : {
-            "type" : "string"
+          "pullRequestSourceBranch": {
+            "type": "string"
           },
-          "repoId" : {
-            "type" : "string"
+          "repoId": {
+            "type": "string"
           },
-          "repoName" : {
-            "type" : "string"
+          "repoName": {
+            "type": "string"
           },
-          "repoOwner" : {
-            "type" : "string"
+          "repoOwner": {
+            "type": "string"
           },
-          "repoProvider" : {
-            "type" : "string"
+          "repoProvider": {
+            "type": "string"
           },
-          "repoType" : {
-            "type" : "string"
+          "repoType": {
+            "type": "string"
           },
-          "repoUrl" : {
-            "type" : "string"
+          "repoUrl": {
+            "type": "string"
           },
-          "webhookEventId" : {
-            "type" : "string"
+          "webhookEventId": {
+            "type": "string"
           },
-          "artifactId" : {
-            "type" : "string"
+          "artifactId": {
+            "type": "string"
           },
-          "artifactShortId" : {
-            "type" : "string"
+          "artifactShortId": {
+            "type": "string"
           },
-          "buildId" : {
-            "type" : "string"
+          "buildId": {
+            "type": "string"
           },
-          "buildNum" : {
-            "type" : "integer",
-            "format" : "int64"
+          "buildNum": {
+            "type": "integer",
+            "format": "int64"
           },
-          "customReleaseVersion" : {
-            "type" : "string"
+          "customReleaseVersion": {
+            "type": "string"
           },
-          "releaseVersion" : {
-            "type" : "string"
+          "releaseVersion": {
+            "type": "string"
           },
-          "controlRepoName" : {
-            "type" : "string"
+          "controlRepoName": {
+            "type": "string"
           },
-          "deploymentDescription" : {
-            "type" : "string"
+          "deploymentDescription": {
+            "type": "string"
           },
-          "deploymentEndTime" : {
-            "type" : "integer",
-            "format" : "int64"
+          "deploymentEndTime": {
+            "type": "integer",
+            "format": "int64"
           },
-          "deploymentId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "deploymentId": {
+            "type": "integer",
+            "format": "int64"
           },
-          "deploymentStartTime" : {
-            "type" : "integer",
-            "format" : "int64"
+          "deploymentStartTime": {
+            "type": "integer",
+            "format": "int64"
           },
-          "deploymentState" : {
-            "type" : "string",
-            "enum" : [ "WAITING", "QUEUED", "CANCELLED", "RUNNING", "DONE", "FAILED", "ABORTED", "TIMEDOUT", "PENDING_APPROVAL", "APPROVED", "DECLINED" ]
+          "deploymentState": {
+            "type": "string",
+            "enum": [
+              "WAITING",
+              "QUEUED",
+              "CANCELLED",
+              "RUNNING",
+              "DONE",
+              "FAILED",
+              "ABORTED",
+              "TIMEDOUT",
+              "PENDING_APPROVAL",
+              "APPROVED",
+              "DECLINED"
+            ]
           },
-          "deploymentType" : {
-            "type" : "string",
-            "enum" : [ "DIRECT_MERGE", "TEMPORARY_BRANCH", "INCREMENTAL_BRANCH", "BLUE_GREEN_BRANCH", "CODE_ONLY_DEPLOY", "FEATURE_BRANCH" ]
+          "deploymentType": {
+            "type": "string",
+            "enum": [
+              "DIRECT_MERGE",
+              "TEMPORARY_BRANCH",
+              "INCREMENTAL_BRANCH",
+              "BLUE_GREEN_BRANCH",
+              "CODE_ONLY_DEPLOY",
+              "FEATURE_BRANCH"
+            ]
           },
-          "isAutoDeploy" : {
-            "type" : "boolean"
+          "isAutoDeploy": {
+            "type": "boolean"
           },
-          "nodeGrouId" : {
-            "type" : "string"
+          "nodeGrouId": {
+            "type": "string"
           },
-          "nodeGroupName" : {
-            "type" : "string"
+          "nodeGroupName": {
+            "type": "string"
           },
-          "puppetEnterpriseServerName" : {
-            "type" : "string"
+          "puppetEnterpriseServerName": {
+            "type": "string"
           },
-          "sha" : {
-            "type" : "string"
+          "sha": {
+            "type": "string"
           },
-          "sourceBranch" : {
-            "type" : "string"
+          "sourceBranch": {
+            "type": "string"
           },
-          "targetBranch" : {
-            "type" : "string"
+          "targetBranch": {
+            "type": "string"
           },
-          "isAutoDeploy_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "isAutoDeploy_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "deploymentId_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "deploymentId_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "deploymentStartTime_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "deploymentStartTime_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "deploymentEndTime_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "deploymentEndTime_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "buildNum_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "buildNum_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "eventTime_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "eventTime_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "eventId_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "eventId_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "maxChildEventId_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "maxChildEventId_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "parentEventId_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "parentEventId_asStr": {
+            "type": "string",
+            "writeOnly": true
           }
         }
       },
-      "VmJobInstanceEvent" : {
-        "type" : "object",
-        "properties" : {
-          "appName" : {
-            "type" : "string"
+      "VmJobInstanceEvent": {
+        "type": "object",
+        "properties": {
+          "appName": {
+            "type": "string"
           },
-          "containerName" : {
-            "type" : "string"
+          "containerName": {
+            "type": "string"
           },
-          "domain" : {
-            "type" : "string"
+          "domain": {
+            "type": "string"
           },
-          "eventId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "eventId": {
+            "type": "integer",
+            "format": "int64"
           },
-          "eventName" : {
-            "type" : "string"
+          "eventName": {
+            "type": "string"
           },
-          "eventTime" : {
-            "type" : "integer",
-            "format" : "int64"
+          "eventTime": {
+            "type": "integer",
+            "format": "int64"
           },
-          "eventType" : {
-            "type" : "string",
-            "enum" : [ "COMMIT", "BUILD", "RELEASE", "DEPLOY", "DOCKERIMAGE", "PUSH", "PULLREQUEST", "VMJOB", "ROLLINGDEPLOY", "PEIMPACTANALYSIS", "PEMODULEDEPLOYMENT", "DEPLOYMENT" ]
+          "eventType": {
+            "type": "string",
+            "enum": [
+              "COMMIT",
+              "BUILD",
+              "RELEASE",
+              "DEPLOY",
+              "DOCKERIMAGE",
+              "PUSH",
+              "PULLREQUEST",
+              "VMJOB",
+              "ROLLINGDEPLOY",
+              "PEIMPACTANALYSIS",
+              "PEMODULEDEPLOYMENT",
+              "DEPLOYMENT"
+            ]
           },
-          "maxChildEventId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "maxChildEventId": {
+            "type": "integer",
+            "format": "int64"
           },
-          "parentEventId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "parentEventId": {
+            "type": "integer",
+            "format": "int64"
           },
-          "userAccountId" : {
-            "type" : "string"
+          "userAccountId": {
+            "type": "string"
           },
-          "username" : {
-            "type" : "string"
+          "username": {
+            "type": "string"
           },
-          "authorName" : {
-            "type" : "string"
+          "authorName": {
+            "type": "string"
           },
-          "authorUsername" : {
-            "type" : "string"
+          "authorUsername": {
+            "type": "string"
           },
-          "branch" : {
-            "type" : "string"
+          "branch": {
+            "type": "string"
           },
-          "commitId" : {
-            "type" : "string"
+          "commitId": {
+            "type": "string"
           },
-          "commitMsg" : {
-            "type" : "string"
+          "commitMsg": {
+            "type": "string"
           },
-          "commitUrl" : {
-            "type" : "string"
+          "commitUrl": {
+            "type": "string"
           },
-          "pullRequestDestBranch" : {
-            "type" : "string"
+          "pullRequestDestBranch": {
+            "type": "string"
           },
-          "pullRequestHtmlUrl" : {
-            "type" : "string"
+          "pullRequestHtmlUrl": {
+            "type": "string"
           },
-          "pullRequestId" : {
-            "type" : "string"
+          "pullRequestId": {
+            "type": "string"
           },
-          "pullRequestNumber" : {
-            "type" : "string"
+          "pullRequestNumber": {
+            "type": "string"
           },
-          "pullRequestSourceBranch" : {
-            "type" : "string"
+          "pullRequestSourceBranch": {
+            "type": "string"
           },
-          "repoId" : {
-            "type" : "string"
+          "repoId": {
+            "type": "string"
           },
-          "repoName" : {
-            "type" : "string"
+          "repoName": {
+            "type": "string"
           },
-          "repoOwner" : {
-            "type" : "string"
+          "repoOwner": {
+            "type": "string"
           },
-          "repoProvider" : {
-            "type" : "string"
+          "repoProvider": {
+            "type": "string"
           },
-          "repoType" : {
-            "type" : "string"
+          "repoType": {
+            "type": "string"
           },
-          "repoUrl" : {
-            "type" : "string"
+          "repoUrl": {
+            "type": "string"
           },
-          "webhookEventId" : {
-            "type" : "string"
+          "webhookEventId": {
+            "type": "string"
           },
-          "artifactId" : {
-            "type" : "string"
+          "artifactId": {
+            "type": "string"
           },
-          "artifactShortId" : {
-            "type" : "string"
+          "artifactShortId": {
+            "type": "string"
           },
-          "buildId" : {
-            "type" : "string"
+          "buildId": {
+            "type": "string"
           },
-          "buildNum" : {
-            "type" : "integer",
-            "format" : "int64"
+          "buildNum": {
+            "type": "integer",
+            "format": "int64"
           },
-          "customReleaseVersion" : {
-            "type" : "string"
+          "customReleaseVersion": {
+            "type": "string"
           },
-          "releaseVersion" : {
-            "type" : "string"
+          "releaseVersion": {
+            "type": "string"
           },
-          "jobConfiguration" : {
-            "$ref" : "#/components/schemas/ContainerBuildConfiguration"
+          "jobConfiguration": {
+            "$ref": "#/components/schemas/ContainerBuildConfiguration"
           },
-          "jobDescription" : {
-            "type" : "string"
+          "jobDescription": {
+            "type": "string"
           },
-          "jobEndTime" : {
-            "type" : "integer",
-            "format" : "int64"
+          "jobEndTime": {
+            "type": "integer",
+            "format": "int64"
           },
-          "jobName" : {
-            "type" : "string"
+          "jobName": {
+            "type": "string"
           },
-          "jobStartTime" : {
-            "type" : "integer",
-            "format" : "int64"
+          "jobStartTime": {
+            "type": "integer",
+            "format": "int64"
           },
-          "jobStatus" : {
-            "type" : "string"
+          "jobStatus": {
+            "type": "string"
           },
-          "vmJobInstanceId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "vmJobInstanceId": {
+            "type": "integer",
+            "format": "int64"
           },
-          "vmJobTemplateId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "vmJobTemplateId": {
+            "type": "integer",
+            "format": "int64"
           },
-          "vmJobTemplateId_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "vmJobTemplateId_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "jobEndTime_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "jobEndTime_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "jobStartTime_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "jobStartTime_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "vmJobInstanceId_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "vmJobInstanceId_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "buildNum_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "buildNum_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "eventTime_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "eventTime_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "eventId_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "eventId_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "maxChildEventId_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "maxChildEventId_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "parentEventId_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "parentEventId_asStr": {
+            "type": "string",
+            "writeOnly": true
           }
         }
       },
-      "PuppetEnterpriseCredentials" : {
-        "type" : "object",
-        "properties" : {
-          "certificate" : {
-            "type" : "string"
+      "PuppetEnterpriseCredentials": {
+        "type": "object",
+        "properties": {
+          "certificate": {
+            "type": "string"
           },
-          "codeManagerEndpoint" : {
-            "type" : "string"
+          "codeManagerEndpoint": {
+            "type": "string"
           },
-          "defaultBranchOverrideSupported" : {
-            "type" : "boolean"
+          "defaultBranchOverrideSupported": {
+            "type": "boolean"
           },
-          "domain" : {
-            "type" : "string"
+          "domain": {
+            "type": "string"
           },
-          "name" : {
-            "type" : "string"
+          "name": {
+            "type": "string"
           },
-          "nodeClassifierEndpoint" : {
-            "type" : "string"
+          "nodeClassifierEndpoint": {
+            "type": "string"
           },
-          "orchestratorEndpoint" : {
-            "type" : "string"
+          "orchestratorEndpoint": {
+            "type": "string"
           },
-          "protectedEnvironmentsCount" : {
-            "type" : "integer",
-            "format" : "int32"
+          "protectedEnvironmentsCount": {
+            "type": "integer",
+            "format": "int32"
           },
-          "puppetDBEndpoint" : {
-            "type" : "string"
+          "puppetDBEndpoint": {
+            "type": "string"
           },
-          "puppetServerCertificate" : {
-            "type" : "string"
+          "puppetServerCertificate": {
+            "type": "string"
           },
-          "puppetServerEndpoint" : {
-            "type" : "string"
+          "puppetServerEndpoint": {
+            "type": "string"
           },
-          "puppetServerPrivateKey" : {
-            "type" : "string"
+          "puppetServerPrivateKey": {
+            "type": "string"
           },
-          "token" : {
-            "type" : "string"
+          "token": {
+            "type": "string"
           },
-          "tokenExpiration" : {
-            "type" : "integer",
-            "format" : "int64"
+          "tokenExpiration": {
+            "type": "integer",
+            "format": "int64"
           },
-          "useLegacyCompileEndpoint" : {
-            "type" : "boolean"
+          "useLegacyCompileEndpoint": {
+            "type": "boolean"
           },
-          "defaultBranchOverrideSupported_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "defaultBranchOverrideSupported_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "protectedEnvironmentsCount_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "protectedEnvironmentsCount_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "tokenExpiration_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "tokenExpiration_asStr": {
+            "type": "string",
+            "writeOnly": true
           },
-          "useLegacyCompileEndpoint_asStr" : {
-            "type" : "string",
-            "writeOnly" : true
+          "useLegacyCompileEndpoint_asStr": {
+            "type": "string",
+            "writeOnly": true
           }
         }
       },
-      "CreateTokenRequest" : {
-        "type" : "object",
-        "properties" : {
-          "email" : {
-            "type" : "string"
+      "CreateTokenRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
           },
-          "password" : {
-            "type" : "string"
+          "password": {
+            "type": "string"
           }
         }
       },
-      "LoginData" : {
-        "type" : "object",
-        "properties" : {
-          "domain" : {
-            "type" : "string"
+      "User": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "pattern": "^d\\d+",
+            "example": "d2"
           },
-          "name" : {
-            "type" : "string"
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "example": 2
           },
-          "country" : {
-            "type" : "string",
-            "enum" : [ "UNDEFINED", "AC", "AD", "AE", "AF", "AG", "AI", "AL", "AM", "AN", "AO", "AQ", "AR", "AS", "AT", "AU", "AW", "AX", "AZ", "BA", "BB", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BL", "BM", "BN", "BO", "BQ", "BR", "BS", "BT", "BU", "BV", "BW", "BY", "BZ", "CA", "CC", "CD", "CF", "CG", "CH", "CI", "CK", "CL", "CM", "CN", "CO", "CP", "CR", "CS", "CU", "CV", "CW", "CX", "CY", "CZ", "DE", "DG", "DJ", "DK", "DM", "DO", "DZ", "EA", "EC", "EE", "EG", "EH", "ER", "ES", "ET", "EU", "EZ", "FI", "FJ", "FK", "FM", "FO", "FR", "FX", "GA", "GB", "GD", "GE", "GF", "GG", "GH", "GI", "GL", "GM", "GN", "GP", "GQ", "GR", "GS", "GT", "GU", "GW", "GY", "HK", "HM", "HN", "HR", "HT", "HU", "IC", "ID", "IE", "IL", "IM", "IN", "IO", "IQ", "IR", "IS", "IT", "JE", "JM", "JO", "JP", "KE", "KG", "KH", "KI", "KM", "KN", "KP", "KR", "KW", "KY", "KZ", "LA", "LB", "LC", "LI", "LK", "LR", "LS", "LT", "LU", "LV", "LY", "MA", "MC", "MD", "ME", "MF", "MG", "MH", "MK", "ML", "MM", "MN", "MO", "MP", "MQ", "MR", "MS", "MT", "MU", "MV", "MW", "MX", "MY", "MZ", "NA", "NC", "NE", "NF", "NG", "NI", "NL", "NO", "NP", "NR", "NT", "NU", "NZ", "OM", "PA", "PE", "PF", "PG", "PH", "PK", "PL", "PM", "PN", "PR", "PS", "PT", "PW", "PY", "QA", "RE", "RO", "RS", "RU", "RW", "SA", "SB", "SC", "SD", "SE", "SF", "SG", "SH", "SI", "SJ", "SK", "SL", "SM", "SN", "SO", "SR", "SS", "ST", "SU", "SV", "SX", "SY", "SZ", "TA", "TC", "TD", "TF", "TG", "TH", "TJ", "TK", "TL", "TM", "TN", "TO", "TP", "TR", "TT", "TV", "TW", "TZ", "UA", "UG", "UK", "UM", "US", "UY", "UZ", "VA", "VC", "VE", "VG", "VI", "VN", "VU", "WF", "WS", "XK", "YE", "YT", "YU", "ZA", "ZM", "ZR", "ZW" ]
+          "firstName": {
+            "type": "string"
           },
-          "hashKey" : {
-            "type" : "string"
+          "lastName": {
+            "type": "string"
           },
-          "rangeKey" : {
-            "type" : "string"
+          "userName": {
+            "type": "string",
+            "minLength": 1
           },
-          "passwordHash" : {
-            "type" : "string"
+          "email": {
+            "type": "string",
+            "minLength": 1
           },
-          "firstName" : {
-            "type" : "string"
+          "createdTime": {
+            "type": "integer",
+            "format": "int64"
           },
-          "userId" : {
-            "type" : "string"
+          "companyName": {
+            "type": "string"
           },
-          "accountId" : {
-            "type" : "string"
+          "gravatarEmail": {
+            "type": "string"
           },
-          "emailVerificationState" : {
-            "type" : "string",
-            "enum" : [ "UnVerified", "Verified" ]
+          "rootUser": {
+            "type": "boolean",
+            "default": false
           },
-          "nickname" : {
-            "type" : "string"
+          "superUser": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "CurrentUserDetails": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
           },
-          "lastName" : {
-            "type" : "string"
-          },
-          "companyName" : {
-            "type" : "string"
-          },
-          "createTime" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "loginState" : {
-            "type" : "string",
-            "enum" : [ "Active", "Disabled" ]
-          },
-          "workspaceName" : {
-            "type" : "string"
-          },
-          "isWorkspace" : {
-            "type" : "boolean"
-          },
-          "workspace" : {
-            "type" : "boolean"
-          },
-          "hashKeyName" : {
-            "type" : "string"
-          },
-          "rangeKeyName" : {
-            "type" : "string"
-          },
-          "privateRepoCount" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "maxPrivateRepoCount" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "maxProjectCount" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "maxNodeCount" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "planExpiration" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "maxTeamCount" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "planName" : {
-            "type" : "string"
-          },
-          "ldapDN" : {
-            "type" : "string"
-          },
-          "lastLoginTime" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "gravatarEmail" : {
-            "type" : "string"
-          },
-          "paymentFailed" : {
-            "type" : "string"
-          },
-          "ccexpires" : {
-            "type" : "object",
-            "properties" : {
-              "year" : {
-                "type" : "integer",
-                "format" : "int32"
-              },
-              "month" : {
-                "type" : "string",
-                "enum" : [ "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER" ]
-              },
-              "leapYear" : {
-                "type" : "boolean"
-              },
-              "monthValue" : {
-                "type" : "integer",
-                "format" : "int32"
-              }
+          "workspaces": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Workspace"
             }
+          }
+        }
+      },
+      "Workspace": {
+        "type": "object",
+        "required": [
+          "domain",
+          "name"
+        ],
+        "properties": {
+          "domain": {
+            "type": "string",
+            "pattern": "^d\\d+"
           },
-          "defaultProductType" : {
-            "type" : "string"
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "EvaluatePermissionsRequest": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "integer",
+            "format": "int64"
           },
-          "stripeCustomerId" : {
-            "type" : "string"
-          },
-          "stripeSubscriptionId" : {
-            "type" : "string"
-          },
-          "loginStateCodeId" : {
-            "type" : "string"
-          },
-          "successLogins" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
+          "permissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PermissionTriplet"
             }
+          }
+        }
+      },
+      "PermittedResponse": {
+        "type": "array",
+        "items": {
+          "type": "boolean"
+        }
+      },
+      "PermissionTriplet": {
+        "type": "object",
+        "required": [
+          "object_type",
+          "action",
+          "instance"
+        ],
+        "properties": {
+          "object_type": {
+            "type": "string",
+            "enum": [
+              "GROUP",
+              "SERVER",
+              "PROJECT",
+              "SETTING",
+              "ENVIRONMENT",
+              "WORKFLOW",
+              "DASHBOARD",
+              "VM_JOB_TEMPLATE",
+              "MODULE",
+              "CONTROL_REPO",
+              "BOLT_PROJECT"
+            ]
           },
-          "successLoginsMaybeNull" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
+          "action": {
+            "type": "string",
+            "enum": [
+              "CREATE",
+              "READ",
+              "WRITE",
+              "DELETE",
+              "ADMIN",
+              "BUILD",
+              "RUN",
+              "DEPLOY",
+              "PROMOTE",
+              "MANAGE",
+              "EDIT"
+            ]
           },
-          "emailVerificationStateCodeId" : {
-            "type" : "string"
-          },
-          "resetPasswordKey" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "format" : "byte"
-            }
-          },
-          "nicknameLower" : {
-            "type" : "string"
-          },
-          "lastFailedLoginTime" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "failedLoginCount" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "ddbccexpires" : {
-            "type" : "string"
-          },
-          "selectedWorkspace" : {
-            "type" : "string"
-          },
-          "countryCode" : {
-            "type" : "string"
+          "instance": {
+            "type": "string"
           }
         }
       }
     },
-    "securitySchemes" : {
-      "default" : {
-        "type" : "apiKey",
-        "name" : "Authorization",
-        "in" : "header"
+    "securitySchemes": {
+        "default": {
+          "type": "apiKey",
+          "name": "Authorization",
+          "in": "header"
+        }
       }
     }
   }
-}

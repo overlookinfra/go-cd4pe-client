@@ -33,6 +33,7 @@ All URIs are relative to *http://localhost/api/v1*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *DefaultApi* | [**CreateToken**](docs/DefaultApi.md#createtoken) | **Post** /auth/token | Create a token associated with the passed in credentials
+*DefaultApi* | [**EvaluatePermissions**](docs/DefaultApi.md#evaluatepermissions) | **Post** /permitted | Evaluate permissions for a user
 *DefaultApi* | [**GetControlRepos**](docs/DefaultApi.md#getcontrolrepos) | **Get** /workspaces/{workspaceId}/controlrepos | 
 *DefaultApi* | [**GetUserInfo**](docs/DefaultApi.md#getuserinfo) | **Get** /user | Get information about the user associated with this token
 *DefaultApi* | [**ListPEsForWorkspace**](docs/DefaultApi.md#listpesforworkspace) | **Get** /workspaces/{workspaceId}/integrations/pe | list PE instances connected to this workspace
@@ -44,16 +45,19 @@ Class | Method | HTTP request | Description
  - [ControlRepo](docs/ControlRepo.md)
  - [ControlRepoId](docs/ControlRepoId.md)
  - [CreateTokenRequest](docs/CreateTokenRequest.md)
+ - [CurrentUserDetails](docs/CurrentUserDetails.md)
  - [DeploymentAppEvent](docs/DeploymentAppEvent.md)
- - [LoginData](docs/LoginData.md)
- - [LoginDataCcexpires](docs/LoginDataCcexpires.md)
+ - [EvaluatePermissionsRequest](docs/EvaluatePermissionsRequest.md)
  - [PeImpactAnalysisEnvironment](docs/PeImpactAnalysisEnvironment.md)
  - [PeImpactAnalysisEvent](docs/PeImpactAnalysisEvent.md)
+ - [PermissionTriplet](docs/PermissionTriplet.md)
  - [PuppetEnterpriseCredentials](docs/PuppetEnterpriseCredentials.md)
  - [PuppetEnterpriseCredentialsId](docs/PuppetEnterpriseCredentialsId.md)
  - [Repository](docs/Repository.md)
  - [RollingDeploymentEvent](docs/RollingDeploymentEvent.md)
+ - [User](docs/User.md)
  - [VmJobInstanceEvent](docs/VmJobInstanceEvent.md)
+ - [Workspace](docs/Workspace.md)
 
 
 ## Documentation For Authorization
