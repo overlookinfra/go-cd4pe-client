@@ -11,12 +11,12 @@ package cd4pe
 
 import (
 	_context "context"
+	"fmt"
+	"github.com/antihax/optional"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
-	"fmt"
 	"strings"
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -29,14 +29,14 @@ type DefaultApiService service
 
 // CreateTokenOpts Optional parameters for the method 'CreateToken'
 type CreateTokenOpts struct {
-    CreateTokenRequest optional.Interface
+	CreateTokenRequest optional.Interface
 }
 
 /*
 CreateToken Create a token associated with the passed in credentials
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *CreateTokenOpts - Optional Parameters:
- * @param "CreateTokenRequest" (optional.Interface of CreateTokenRequest) - 
+ * @param "CreateTokenRequest" (optional.Interface of CreateTokenRequest) -
 @return string
 */
 func (a *DefaultApiService) CreateToken(ctx _context.Context, localVarOptionals *CreateTokenOpts) (string, *_nethttp.Response, error) {
@@ -115,13 +115,125 @@ func (a *DefaultApiService) CreateToken(ctx _context.Context, localVarOptionals 
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-			var v string
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
+		var v string
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+// EvaluatePermissionsOpts Optional parameters for the method 'EvaluatePermissions'
+type EvaluatePermissionsOpts struct {
+	EvaluatePermissionsRequest optional.Interface
+}
+
+/*
+EvaluatePermissions Evaluate permissions for a user
+ * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ * @param workspaceId
+ * @param optional nil or *EvaluatePermissionsOpts - Optional Parameters:
+ * @param "EvaluatePermissionsRequest" (optional.Interface of EvaluatePermissionsRequest) -
+@return []bool
+*/
+func (a *DefaultApiService) EvaluatePermissions(ctx _context.Context, workspaceId string, localVarOptionals *EvaluatePermissionsOpts) ([]bool, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  []bool
+	)
+
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/permitted"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+
+	localVarQueryParams.Add("workspaceId", parameterToString(workspaceId, ""))
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	if localVarOptionals != nil && localVarOptionals.EvaluatePermissionsRequest.IsSet() {
+		localVarOptionalEvaluatePermissionsRequest, localVarOptionalEvaluatePermissionsRequestok := localVarOptionals.EvaluatePermissionsRequest.Value().(EvaluatePermissionsRequest)
+		if !localVarOptionalEvaluatePermissionsRequestok {
+			return localVarReturnValue, nil, reportError("evaluatePermissionsRequest should be EvaluatePermissionsRequest")
+		}
+		localVarPostBody = &localVarOptionalEvaluatePermissionsRequest
+	}
+
+	if ctx != nil {
+		// API Key Authentication
+		if auth, ok := ctx.Value(ContextAPIKey).(APIKey); ok {
+			var key string
+			if auth.Prefix != "" {
+				key = auth.Prefix + " " + auth.Key
+			} else {
+				key = auth.Key
 			}
-			newErr.model = v
+			localVarHeaderParams["Authorization"] = key
+		}
+	}
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(r)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		var v []bool
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -212,13 +324,13 @@ func (a *DefaultApiService) GetControlRepos(ctx _context.Context, workspaceId st
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-			var v ControlRepo
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ControlRepo
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -237,16 +349,16 @@ func (a *DefaultApiService) GetControlRepos(ctx _context.Context, workspaceId st
 /*
 GetUserInfo Get information about the user associated with this token
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return LoginData
+@return CurrentUserDetails
 */
-func (a *DefaultApiService) GetUserInfo(ctx _context.Context) (LoginData, *_nethttp.Response, error) {
+func (a *DefaultApiService) GetUserInfo(ctx _context.Context) (CurrentUserDetails, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  LoginData
+		localVarReturnValue  CurrentUserDetails
 	)
 
 	// create path and map variables
@@ -306,13 +418,13 @@ func (a *DefaultApiService) GetUserInfo(ctx _context.Context) (LoginData, *_neth
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-			var v LoginData
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v CurrentUserDetails
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -330,7 +442,7 @@ func (a *DefaultApiService) GetUserInfo(ctx _context.Context) (LoginData, *_neth
 
 // ListPEsForWorkspaceOpts Optional parameters for the method 'ListPEsForWorkspace'
 type ListPEsForWorkspaceOpts struct {
-    IncludeToken optional.Bool
+	IncludeToken optional.Bool
 }
 
 /*
@@ -339,7 +451,7 @@ Returns a list of Puppet Enterprise connected to this workspace
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param workspaceId
  * @param optional nil or *ListPEsForWorkspaceOpts - Optional Parameters:
- * @param "IncludeToken" (optional.Bool) - 
+ * @param "IncludeToken" (optional.Bool) -
 @return []PuppetEnterpriseCredentials
 */
 func (a *DefaultApiService) ListPEsForWorkspace(ctx _context.Context, workspaceId string, localVarOptionals *ListPEsForWorkspaceOpts) ([]PuppetEnterpriseCredentials, *_nethttp.Response, error) {
@@ -413,13 +525,13 @@ func (a *DefaultApiService) ListPEsForWorkspace(ctx _context.Context, workspaceI
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-			var v []PuppetEnterpriseCredentials
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v []PuppetEnterpriseCredentials
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 

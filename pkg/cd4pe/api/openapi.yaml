@@ -95,11 +95,37 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LoginData'
+                $ref: '#/components/schemas/CurrentUserDetails'
           description: The user
         400:
           description: Invalid ID supplied
       summary: Get information about the user associated with this token
+  /permitted:
+    post:
+      operationId: evaluatePermissions
+      parameters:
+      - explode: true
+        in: query
+        name: workspaceId
+        required: true
+        schema:
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvaluatePermissionsRequest'
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermittedResponse'
+          description: Array of permissions
+        400:
+          description: Invalid credentials provided
+      summary: Evaluate permissions for a user
 components:
   schemas:
     ContainerBuildConfiguration:
@@ -933,482 +959,158 @@ components:
         password:
           type: string
       type: object
-    LoginData:
+    User:
       example:
-        country: UNDEFINED
-        lastName: lastName
-        rangeKeyName: rangeKeyName
-        workspace: true
-        loginState: Active
-        emailVerificationStateCodeId: emailVerificationStateCodeId
-        failedLoginCount: 7
-        companyName: companyName
-        maxNodeCount: 5
-        planName: planName
-        maxTeamCount: 7
-        lastFailedLoginTime: 4
-        emailVerificationState: UnVerified
-        ldapDN: ldapDN
-        passwordHash: passwordHash
-        stripeSubscriptionId: stripeSubscriptionId
-        hashKeyName: hashKeyName
-        ccexpires:
-          month: JANUARY
-          year: 3
-          monthValue: 2
-          leapYear: true
-        countryCode: countryCode
-        nickname: nickname
-        resetPasswordKey:
-        - resetPasswordKey
-        - resetPasswordKey
-        workspaceName: workspaceName
-        maxProjectCount: 5
-        isWorkspace: true
-        hashKey: hashKey
-        loginStateCodeId: loginStateCodeId
-        successLoginsMaybeNull:
-        - successLoginsMaybeNull
-        - successLoginsMaybeNull
-        ddbccexpires: ddbccexpires
-        paymentFailed: paymentFailed
-        userId: userId
-        privateRepoCount: 6
-        defaultProductType: defaultProductType
-        rangeKey: rangeKey
-        maxPrivateRepoCount: 1
         firstName: firstName
-        accountId: accountId
-        lastLoginTime: 9
-        selectedWorkspace: selectedWorkspace
-        planExpiration: 2
-        createTime: 0
-        domain: domain
+        lastName: lastName
+        rootUser: false
+        domain: d2
+        companyName: companyName
         gravatarEmail: gravatarEmail
-        name: name
-        successLogins:
-        - successLogins
-        - successLogins
-        nicknameLower: nicknameLower
-        stripeCustomerId: stripeCustomerId
+        createdTime: 0
+        id: 2
+        userName: userName
+        email: email
+        superUser: false
       properties:
         domain:
+          example: d2
+          pattern: ^d\d+
           type: string
-        name:
-          type: string
-        country:
-          enum:
-          - UNDEFINED
-          - AC
-          - AD
-          - AE
-          - AF
-          - AG
-          - AI
-          - AL
-          - AM
-          - AN
-          - AO
-          - AQ
-          - AR
-          - AS
-          - AT
-          - AU
-          - AW
-          - AX
-          - AZ
-          - BA
-          - BB
-          - BD
-          - BE
-          - BF
-          - BG
-          - BH
-          - BI
-          - BJ
-          - BL
-          - BM
-          - BN
-          - BO
-          - BQ
-          - BR
-          - BS
-          - BT
-          - BU
-          - BV
-          - BW
-          - BY
-          - BZ
-          - CA
-          - CC
-          - CD
-          - CF
-          - CG
-          - CH
-          - CI
-          - CK
-          - CL
-          - CM
-          - CN
-          - CO
-          - CP
-          - CR
-          - CS
-          - CU
-          - CV
-          - CW
-          - CX
-          - CY
-          - CZ
-          - DE
-          - DG
-          - DJ
-          - DK
-          - DM
-          - DO
-          - DZ
-          - EA
-          - EC
-          - EE
-          - EG
-          - EH
-          - ER
-          - ES
-          - ET
-          - EU
-          - EZ
-          - FI
-          - FJ
-          - FK
-          - FM
-          - FO
-          - FR
-          - FX
-          - GA
-          - GB
-          - GD
-          - GE
-          - GF
-          - GG
-          - GH
-          - GI
-          - GL
-          - GM
-          - GN
-          - GP
-          - GQ
-          - GR
-          - GS
-          - GT
-          - GU
-          - GW
-          - GY
-          - HK
-          - HM
-          - HN
-          - HR
-          - HT
-          - HU
-          - IC
-          - ID
-          - IE
-          - IL
-          - IM
-          - IN
-          - IO
-          - IQ
-          - IR
-          - IS
-          - IT
-          - JE
-          - JM
-          - JO
-          - JP
-          - KE
-          - KG
-          - KH
-          - KI
-          - KM
-          - KN
-          - KP
-          - KR
-          - KW
-          - KY
-          - KZ
-          - LA
-          - LB
-          - LC
-          - LI
-          - LK
-          - LR
-          - LS
-          - LT
-          - LU
-          - LV
-          - LY
-          - MA
-          - MC
-          - MD
-          - ME
-          - MF
-          - MG
-          - MH
-          - MK
-          - ML
-          - MM
-          - MN
-          - MO
-          - MP
-          - MQ
-          - MR
-          - MS
-          - MT
-          - MU
-          - MV
-          - MW
-          - MX
-          - MY
-          - MZ
-          - NA
-          - NC
-          - NE
-          - NF
-          - NG
-          - NI
-          - NL
-          - NO
-          - NP
-          - NR
-          - NT
-          - NU
-          - NZ
-          - OM
-          - PA
-          - PE
-          - PF
-          - PG
-          - PH
-          - PK
-          - PL
-          - PM
-          - PN
-          - PR
-          - PS
-          - PT
-          - PW
-          - PY
-          - QA
-          - RE
-          - RO
-          - RS
-          - RU
-          - RW
-          - SA
-          - SB
-          - SC
-          - SD
-          - SE
-          - SF
-          - SG
-          - SH
-          - SI
-          - SJ
-          - SK
-          - SL
-          - SM
-          - SN
-          - SO
-          - SR
-          - SS
-          - ST
-          - SU
-          - SV
-          - SX
-          - SY
-          - SZ
-          - TA
-          - TC
-          - TD
-          - TF
-          - TG
-          - TH
-          - TJ
-          - TK
-          - TL
-          - TM
-          - TN
-          - TO
-          - TP
-          - TR
-          - TT
-          - TV
-          - TW
-          - TZ
-          - UA
-          - UG
-          - UK
-          - UM
-          - US
-          - UY
-          - UZ
-          - VA
-          - VC
-          - VE
-          - VG
-          - VI
-          - VN
-          - VU
-          - WF
-          - WS
-          - XK
-          - YE
-          - YT
-          - YU
-          - ZA
-          - ZM
-          - ZR
-          - ZW
-          type: string
-        hashKey:
-          type: string
-        rangeKey:
-          type: string
-        passwordHash:
-          type: string
+        id:
+          example: 2
+          format: int64
+          type: integer
         firstName:
-          type: string
-        userId:
-          type: string
-        accountId:
-          type: string
-        emailVerificationState:
-          enum:
-          - UnVerified
-          - Verified
-          type: string
-        nickname:
           type: string
         lastName:
           type: string
+        userName:
+          minLength: 1
+          type: string
+        email:
+          minLength: 1
+          type: string
+        createdTime:
+          format: int64
+          type: integer
         companyName:
           type: string
-        createTime:
-          format: int64
-          type: integer
-        loginState:
-          enum:
-          - Active
-          - Disabled
-          type: string
-        workspaceName:
-          type: string
-        isWorkspace:
-          type: boolean
-        workspace:
-          type: boolean
-        hashKeyName:
-          type: string
-        rangeKeyName:
-          type: string
-        privateRepoCount:
-          format: int32
-          type: integer
-        maxPrivateRepoCount:
-          format: int32
-          type: integer
-        maxProjectCount:
-          format: int32
-          type: integer
-        maxNodeCount:
-          format: int32
-          type: integer
-        planExpiration:
-          format: int64
-          type: integer
-        maxTeamCount:
-          format: int32
-          type: integer
-        planName:
-          type: string
-        ldapDN:
-          type: string
-        lastLoginTime:
-          format: int64
-          type: integer
         gravatarEmail:
           type: string
-        paymentFailed:
-          type: string
-        ccexpires:
-          $ref: '#/components/schemas/LoginData_ccexpires'
-        defaultProductType:
-          type: string
-        stripeCustomerId:
-          type: string
-        stripeSubscriptionId:
-          type: string
-        loginStateCodeId:
-          type: string
-        successLogins:
+        rootUser:
+          default: false
+          type: boolean
+        superUser:
+          default: false
+          type: boolean
+      type: object
+    CurrentUserDetails:
+      example:
+        workspaces:
+        - domain: domain
+          name: name
+        - domain: domain
+          name: name
+        user:
+          firstName: firstName
+          lastName: lastName
+          rootUser: false
+          domain: d2
+          companyName: companyName
+          gravatarEmail: gravatarEmail
+          createdTime: 0
+          id: 2
+          userName: userName
+          email: email
+          superUser: false
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        workspaces:
           items:
-            type: string
+            $ref: '#/components/schemas/Workspace'
           type: array
-        successLoginsMaybeNull:
-          items:
-            type: string
-          type: array
-        emailVerificationStateCodeId:
+      type: object
+    Workspace:
+      example:
+        domain: domain
+        name: name
+      properties:
+        domain:
+          pattern: ^d\d+
           type: string
-        resetPasswordKey:
-          items:
-            format: byte
-            type: string
-          type: array
-        nicknameLower:
+        name:
+          minLength: 1
           type: string
-        lastFailedLoginTime:
+      required:
+      - domain
+      - name
+      type: object
+    EvaluatePermissionsRequest:
+      example:
+        permissions:
+        - instance: instance
+          object_type: GROUP
+          action: CREATE
+        - instance: instance
+          object_type: GROUP
+          action: CREATE
+        token: 0
+      properties:
+        token:
           format: int64
           type: integer
-        failedLoginCount:
-          format: int32
-          type: integer
-        ddbccexpires:
-          type: string
-        selectedWorkspace:
-          type: string
-        countryCode:
-          type: string
+        permissions:
+          items:
+            $ref: '#/components/schemas/PermissionTriplet'
+          type: array
       type: object
-    LoginData_ccexpires:
+    PermittedResponse:
+      items:
+        type: boolean
+      type: array
+    PermissionTriplet:
       example:
-        month: JANUARY
-        year: 3
-        monthValue: 2
-        leapYear: true
+        instance: instance
+        object_type: GROUP
+        action: CREATE
       properties:
-        year:
-          format: int32
-          type: integer
-        month:
+        object_type:
           enum:
-          - JANUARY
-          - FEBRUARY
-          - MARCH
-          - APRIL
-          - MAY
-          - JUNE
-          - JULY
-          - AUGUST
-          - SEPTEMBER
-          - OCTOBER
-          - NOVEMBER
-          - DECEMBER
+          - GROUP
+          - SERVER
+          - PROJECT
+          - SETTING
+          - ENVIRONMENT
+          - WORKFLOW
+          - DASHBOARD
+          - VM_JOB_TEMPLATE
+          - MODULE
+          - CONTROL_REPO
+          - BOLT_PROJECT
           type: string
-        leapYear:
-          type: boolean
-        monthValue:
-          format: int32
-          type: integer
+        action:
+          enum:
+          - CREATE
+          - READ
+          - WRITE
+          - DELETE
+          - ADMIN
+          - BUILD
+          - RUN
+          - DEPLOY
+          - PROMOTE
+          - MANAGE
+          - EDIT
+          type: string
+        instance:
+          type: string
+      required:
+      - action
+      - instance
+      - object_type
+      type: object
   securitySchemes:
     default:
       in: header
