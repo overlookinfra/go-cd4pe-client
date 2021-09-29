@@ -52,48 +52,6 @@
         }
       }
     },
-    "/workspaces/{workspaceId}/integrations/pe": {
-      "get": {
-        "summary": "list PE instances connected to this workspace",
-        "description": "Returns a list of Puppet Enterprise connected to this workspace",
-        "operationId": "listPEsForWorkspace",
-        "parameters" : [ {
-            "name": "workspaceId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-        }, {
-            "name": "includeToken",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            }
-        } ],
-        "responses": {
-          "default": {
-            "description": "A list of Puppet Enterprise instances.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PuppetEnterpriseCredentials"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid workspace id supplied"
-          },
-          "404": {
-            "description": "workspace not found"
-          }
-        }
-      }
-    },
     "/auth/token": {
       "post": {
         "summary": "Create a token associated with the passed in credentials",
@@ -182,6 +140,29 @@
           "400": {
             "description": "Invalid credentials provided"
           }
+        }
+      }
+    },
+    "/internal/workspaces/{workspaceId}/integrations/pe": {
+      "get": {
+        "summary": "List PE integrations for a workspace",
+        "description": "List PE integrations with tokens for a workspace. This is a internal only api.",
+        "operationId": "listPeIntegrationsWithToken",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/WorkspaceIdInPath"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/ListPEIntegrationsWithTokenResponse"
+          },
+        "400": {
+          "description": "Invalid workspace id supplied"
+        },
+        "404": {
+          "description": "workspace not found"
+        }
         }
       }
     }
@@ -316,6 +297,17 @@
             "type": "string"
           },
           "name": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateTokenRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
             "type": "string"
           }
         }
@@ -1309,17 +1301,6 @@
           }
         }
       },
-      "CreateTokenRequest": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        }
-      },
       "User": {
         "type": "object",
         "properties": {
@@ -1463,6 +1444,70 @@
             "type": "string"
           }
         }
+      },
+      "PuppetEnterpriseCredentialsWithToken": {
+        "title": "PuppetEnterpriseCredentialsWithToken",
+        "description": "Puppet Enterprise credentials with token",
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "certificate": {
+            "type": "string"
+          },
+          "codeManagerEndpoint": {
+            "type": "string"
+          },
+          "nodeClassifierEndpoint": {
+            "type": "string"
+          },
+          "orchestratorEndpoint": {
+            "type": "string"
+          },
+          "puppetDBEndpoint": {
+            "type": "string"
+          },
+          "puppetServerEndpoint": {
+            "type": "string"
+          },
+          "puppetServerCertificate": {
+            "type": "string"
+          },
+          "puppetServerPrivateKey": {
+            "type": "string"
+          },
+          "useLegacyCompileEndpoint": {
+            "type": "boolean"
+          },
+          "protectedEnvironmentsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "token": {
+            "type": "string"
+          },
+          "tokenExpiration": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ListPEIntegrationsWithTokenResponse": {
+        "title": "ListPEIntegrationsWithTokenResponse",
+        "description": "List integrated PE instances",
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/PuppetEnterpriseCredentialsWithToken"
+        }
+      },
+      "WorkspaceId": {
+        "type": "string",
+        "pattern": "^d\\d+",
+        "example": "d3"
       }
     },
     "securitySchemes": {
@@ -1471,6 +1516,29 @@
           "name": "Authorization",
           "in": "header"
         }
+      },
+    "parameters": {
+      "WorkspaceIdInPath": {
+        "name": "workspaceId",
+        "required": true,
+        "description": "Identifies a workspace",
+        "in": "path",
+        "schema": {
+          "$ref": "#/components/schemas/WorkspaceId"
+        }
       }
+    },
+    "responses": {
+      "ListPEIntegrationsWithTokenResponse": {
+        "description": "List PE integrations with Token response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ListPEIntegrationsWithTokenResponse"
+            }
+          }
+        }
+      }
+    }
     }
   }

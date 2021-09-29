@@ -1,9 +1,5 @@
 language: go
 
-env:
-  global:
-  -GO111MODULE=on
-
 install:
   - go get -d -v .
 

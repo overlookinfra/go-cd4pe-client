@@ -36,7 +36,7 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**EvaluatePermissions**](docs/DefaultApi.md#evaluatepermissions) | **Post** /permitted | Evaluate permissions for a user
 *DefaultApi* | [**GetControlRepos**](docs/DefaultApi.md#getcontrolrepos) | **Get** /workspaces/{workspaceId}/controlrepos | 
 *DefaultApi* | [**GetUserInfo**](docs/DefaultApi.md#getuserinfo) | **Get** /user | Get information about the user associated with this token
-*DefaultApi* | [**ListPEsForWorkspace**](docs/DefaultApi.md#listpesforworkspace) | **Get** /workspaces/{workspaceId}/integrations/pe | list PE instances connected to this workspace
+*DefaultApi* | [**ListPeIntegrationsWithToken**](docs/DefaultApi.md#listpeintegrationswithtoken) | **Get** /internal/workspaces/{workspaceId}/integrations/pe | List PE integrations for a workspace
 
 
 ## Documentation For Models
@@ -53,6 +53,7 @@ Class | Method | HTTP request | Description
  - [PermissionTriplet](docs/PermissionTriplet.md)
  - [PuppetEnterpriseCredentials](docs/PuppetEnterpriseCredentials.md)
  - [PuppetEnterpriseCredentialsId](docs/PuppetEnterpriseCredentialsId.md)
+ - [PuppetEnterpriseCredentialsWithToken](docs/PuppetEnterpriseCredentialsWithToken.md)
  - [Repository](docs/Repository.md)
  - [RollingDeploymentEvent](docs/RollingDeploymentEvent.md)
  - [User](docs/User.md)
