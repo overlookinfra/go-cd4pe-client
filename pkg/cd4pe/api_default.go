@@ -440,41 +440,31 @@ func (a *DefaultApiService) GetUserInfo(ctx _context.Context) (CurrentUserDetail
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-// ListPEsForWorkspaceOpts Optional parameters for the method 'ListPEsForWorkspace'
-type ListPEsForWorkspaceOpts struct {
-	IncludeToken optional.Bool
-}
-
 /*
-ListPEsForWorkspace list PE instances connected to this workspace
-Returns a list of Puppet Enterprise connected to this workspace
+ListPeIntegrationsWithToken List PE integrations for a workspace
+List PE integrations with tokens for a workspace. This is a internal only api.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param workspaceId
- * @param optional nil or *ListPEsForWorkspaceOpts - Optional Parameters:
- * @param "IncludeToken" (optional.Bool) -
-@return []PuppetEnterpriseCredentials
+ * @param workspaceId Identifies a workspace
+@return []PuppetEnterpriseCredentialsWithToken
 */
-func (a *DefaultApiService) ListPEsForWorkspace(ctx _context.Context, workspaceId string, localVarOptionals *ListPEsForWorkspaceOpts) ([]PuppetEnterpriseCredentials, *_nethttp.Response, error) {
+func (a *DefaultApiService) ListPeIntegrationsWithToken(ctx _context.Context, workspaceId string) ([]PuppetEnterpriseCredentialsWithToken, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  []PuppetEnterpriseCredentials
+		localVarReturnValue  []PuppetEnterpriseCredentialsWithToken
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/workspaces/{workspaceId}/integrations/pe"
+	localVarPath := a.client.cfg.BasePath + "/internal/workspaces/{workspaceId}/integrations/pe"
 	localVarPath = strings.Replace(localVarPath, "{"+"workspaceId"+"}", _neturl.QueryEscape(fmt.Sprintf("%v", workspaceId)), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.IncludeToken.IsSet() {
-		localVarQueryParams.Add("includeToken", parameterToString(localVarOptionals.IncludeToken.Value(), ""))
-	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -525,13 +515,16 @@ func (a *DefaultApiService) ListPEsForWorkspace(ctx _context.Context, workspaceI
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		var v []PuppetEnterpriseCredentials
-		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-		if err != nil {
-			newErr.error = err.Error()
+		if localVarHTTPResponse.StatusCode == 200 {
+			var v []PuppetEnterpriseCredentialsWithToken
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 

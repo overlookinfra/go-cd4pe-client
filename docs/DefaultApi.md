@@ -8,7 +8,7 @@ Method | HTTP request | Description
 [**EvaluatePermissions**](DefaultApi.md#EvaluatePermissions) | **Post** /permitted | Evaluate permissions for a user
 [**GetControlRepos**](DefaultApi.md#GetControlRepos) | **Get** /workspaces/{workspaceId}/controlrepos | 
 [**GetUserInfo**](DefaultApi.md#GetUserInfo) | **Get** /user | Get information about the user associated with this token
-[**ListPEsForWorkspace**](DefaultApi.md#ListPEsForWorkspace) | **Get** /workspaces/{workspaceId}/integrations/pe | list PE instances connected to this workspace
+[**ListPeIntegrationsWithToken**](DefaultApi.md#ListPeIntegrationsWithToken) | **Get** /internal/workspaces/{workspaceId}/integrations/pe | List PE integrations for a workspace
 
 
 
@@ -158,13 +158,13 @@ This endpoint does not need any parameter.
 [[Back to README]](../README.md)
 
 
-## ListPEsForWorkspace
+## ListPeIntegrationsWithToken
 
-> []PuppetEnterpriseCredentials ListPEsForWorkspace(ctx, workspaceId, optional)
+> []PuppetEnterpriseCredentialsWithToken ListPeIntegrationsWithToken(ctx, workspaceId)
 
-list PE instances connected to this workspace
+List PE integrations for a workspace
 
-Returns a list of Puppet Enterprise connected to this workspace
+List PE integrations with tokens for a workspace. This is a internal only api.
 
 ### Required Parameters
 
@@ -172,22 +172,11 @@ Returns a list of Puppet Enterprise connected to this workspace
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**workspaceId** | **string**|  | 
- **optional** | ***ListPEsForWorkspaceOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a ListPEsForWorkspaceOpts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **includeToken** | **optional.Bool**|  | 
+**workspaceId** | **string**| Identifies a workspace | 
 
 ### Return type
 
-[**[]PuppetEnterpriseCredentials**](PuppetEnterpriseCredentials.md)
+[**[]PuppetEnterpriseCredentialsWithToken**](PuppetEnterpriseCredentialsWithToken.md)
 
 ### Authorization
 
