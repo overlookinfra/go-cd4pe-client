@@ -1,7 +1,11 @@
 language: go
 
+env:
+  global:
+  -GO111MODULE=on
+
 install:
-  - go get -d -v .
+  - go get -d -v ./
 
 script:
   - go build -v ./
