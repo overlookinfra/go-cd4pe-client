@@ -11,7 +11,7 @@ package cd4pe
 
 // PermissionTriplet struct for PermissionTriplet
 type PermissionTriplet struct {
-	ObjectType string `json:"object_type"`
+	ObjectType string `json:"objectType"`
 	Action     string `json:"action"`
 	Instance   string `json:"instance"`
 }

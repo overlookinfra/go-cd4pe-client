@@ -55,7 +55,7 @@ Name | Type | Description  | Notes
 
 ## EvaluatePermissions
 
-> []bool EvaluatePermissions(ctx, workspaceId, optional)
+> Permitted EvaluatePermissions(ctx, workspaceId, optional)
 
 Evaluate permissions for a user
 
@@ -80,7 +80,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**[]bool**
+[**Permitted**](Permitted.md)
 
 ### Authorization
 
@@ -160,7 +160,7 @@ This endpoint does not need any parameter.
 
 ## ListPeIntegrationsWithToken
 
-> []PuppetEnterpriseCredentialsWithToken ListPeIntegrationsWithToken(ctx, workspaceId)
+> ListPeIntegrationsWithTokenResponse ListPeIntegrationsWithToken(ctx, workspaceId)
 
 List PE integrations for a workspace
 
@@ -176,7 +176,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**[]PuppetEnterpriseCredentialsWithToken**](PuppetEnterpriseCredentialsWithToken.md)
+[**ListPeIntegrationsWithTokenResponse**](ListPEIntegrationsWithTokenResponse.md)
 
 ### Authorization
 

@@ -127,15 +127,8 @@
           }
         },
         "responses": {
-          "default": {
-            "description": "Array of permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PermittedResponse"
-                }
-              }
-            }
+          "200": {
+            "$ref": "#/components/responses/PermittedResponse"
           },
           "400": {
             "description": "Invalid credentials provided"
@@ -1261,7 +1254,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "puppetDBEndpoint": {
+          "puppetDbEndpoint": {
             "type": "string"
           },
           "puppetServerCertificate": {
@@ -1394,21 +1387,35 @@
           }
         }
       },
-      "PermittedResponse": {
-        "type": "array",
-        "items": {
-          "type": "boolean"
+      "Permitted": {
+        "title": "Permitted",
+        "description": "List of entries of whether user has corresponding permission",
+        "type": "object",
+        "required": [
+          "results"
+        ],
+        "properties": {
+          "results": {
+            "type": "array",
+            "description": "List of results for requested permissions",
+            "example": [
+              true
+            ],
+            "items": {
+              "type": "boolean"
+            }
+          }
         }
       },
       "PermissionTriplet": {
         "type": "object",
         "required": [
-          "object_type",
+          "objectType",
           "action",
           "instance"
         ],
         "properties": {
-          "object_type": {
+          "objectType": {
             "type": "string",
             "enum": [
               "GROUP",
@@ -1468,7 +1475,7 @@
           "orchestratorEndpoint": {
             "type": "string"
           },
-          "puppetDBEndpoint": {
+          "puppetDbEndpoint": {
             "type": "string"
           },
           "puppetServerEndpoint": {
@@ -1499,9 +1506,18 @@
       "ListPEIntegrationsWithTokenResponse": {
         "title": "ListPEIntegrationsWithTokenResponse",
         "description": "List integrated PE instances",
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/PuppetEnterpriseCredentialsWithToken"
+        "type": "object",
+        "required": [
+          "peIntegrations"
+        ],
+        "properties": {
+          "peIntegrations": {
+            "description": "List of PE integrations (including the token)",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PuppetEnterpriseCredentialsWithToken"
+            }
+          }
         }
       },
       "WorkspaceId": {
@@ -1535,6 +1551,16 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/ListPEIntegrationsWithTokenResponse"
+            }
+          }
+        }
+      },
+      "PermittedResponse": {
+        "description": "Permitted response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Permitted"
             }
           }
         }
