@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **NodeClassifierEndpoint** | **string** |  | [optional] 
 **OrchestratorEndpoint** | **string** |  | [optional] 
 **ProtectedEnvironmentsCount** | **int32** |  | [optional] 
-**PuppetDBEndpoint** | **string** |  | [optional] 
+**PuppetDbEndpoint** | **string** |  | [optional] 
 **PuppetServerCertificate** | **string** |  | [optional] 
 **PuppetServerEndpoint** | **string** |  | [optional] 
 **PuppetServerPrivateKey** | **string** |  | [optional] 
@@ -24,6 +24,6 @@ Name | Type | Description | Notes
 **TokenExpirationAsStr** | **string** |  | [optional] 
 **UseLegacyCompileEndpointAsStr** | **string** |  | [optional] 
 
-[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+[[Back to Model list]](../../../README.md#documentation-for-models) [[Back to API list]](../../../README.md#documentation-for-api-endpoints) [[Back to README]](../../../README.md)
 
 

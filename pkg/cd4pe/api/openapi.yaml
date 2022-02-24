@@ -84,12 +84,12 @@ paths:
             schema:
               $ref: '#/components/schemas/EvaluatePermissionsRequest'
       responses:
-        default:
+        200:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PermittedResponse'
-          description: Array of permissions
+                $ref: '#/components/schemas/Permitted'
+          description: Permitted response
         400:
           description: Invalid credentials provided
       summary: Evaluate permissions for a user
@@ -137,6 +137,12 @@ components:
           schema:
             $ref: '#/components/schemas/ListPEIntegrationsWithTokenResponse'
       description: List PE integrations with Token response
+    PermittedResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Permitted'
+      description: Permitted response
   schemas:
     ContainerBuildConfiguration:
       properties:
@@ -921,7 +927,7 @@ components:
         protectedEnvironmentsCount:
           format: int32
           type: integer
-        puppetDBEndpoint:
+        puppetDbEndpoint:
           type: string
         puppetServerCertificate:
           type: string
@@ -1041,11 +1047,11 @@ components:
       example:
         permissions:
         - instance: instance
-          object_type: GROUP
           action: CREATE
+          objectType: GROUP
         - instance: instance
-          object_type: GROUP
           action: CREATE
+          objectType: GROUP
         token: 0
       properties:
         token:
@@ -1056,17 +1062,30 @@ components:
             $ref: '#/components/schemas/PermissionTriplet'
           type: array
       type: object
-    PermittedResponse:
-      items:
-        type: boolean
-      type: array
+    Permitted:
+      description: List of entries of whether user has corresponding permission
+      example:
+        results:
+        - true
+      properties:
+        results:
+          description: List of results for requested permissions
+          example:
+          - true
+          items:
+            type: boolean
+          type: array
+      required:
+      - results
+      title: Permitted
+      type: object
     PermissionTriplet:
       example:
         instance: instance
-        object_type: GROUP
         action: CREATE
+        objectType: GROUP
       properties:
-        object_type:
+        objectType:
           enum:
           - GROUP
           - SERVER
@@ -1099,7 +1118,7 @@ components:
       required:
       - action
       - instance
-      - object_type
+      - objectType
       type: object
     PuppetEnterpriseCredentialsWithToken:
       description: Puppet Enterprise credentials with token
@@ -1107,12 +1126,12 @@ components:
         protectedEnvironmentsCount: 0
         puppetServerCertificate: puppetServerCertificate
         useLegacyCompileEndpoint: true
+        puppetDbEndpoint: puppetDbEndpoint
         certificate: certificate
         puppetServerPrivateKey: puppetServerPrivateKey
         orchestratorEndpoint: orchestratorEndpoint
         token: token
         puppetServerEndpoint: puppetServerEndpoint
-        puppetDBEndpoint: puppetDBEndpoint
         tokenExpiration: 6
         domain: domain
         nodeClassifierEndpoint: nodeClassifierEndpoint
@@ -1131,7 +1150,7 @@ components:
           type: string
         orchestratorEndpoint:
           type: string
-        puppetDBEndpoint:
+        puppetDbEndpoint:
           type: string
         puppetServerEndpoint:
           type: string
@@ -1153,10 +1172,46 @@ components:
       type: object
     ListPEIntegrationsWithTokenResponse:
       description: List integrated PE instances
-      items:
-        $ref: '#/components/schemas/PuppetEnterpriseCredentialsWithToken'
+      example:
+        peIntegrations:
+        - protectedEnvironmentsCount: 0
+          puppetServerCertificate: puppetServerCertificate
+          useLegacyCompileEndpoint: true
+          puppetDbEndpoint: puppetDbEndpoint
+          certificate: certificate
+          puppetServerPrivateKey: puppetServerPrivateKey
+          orchestratorEndpoint: orchestratorEndpoint
+          token: token
+          puppetServerEndpoint: puppetServerEndpoint
+          tokenExpiration: 6
+          domain: domain
+          nodeClassifierEndpoint: nodeClassifierEndpoint
+          name: name
+          codeManagerEndpoint: codeManagerEndpoint
+        - protectedEnvironmentsCount: 0
+          puppetServerCertificate: puppetServerCertificate
+          useLegacyCompileEndpoint: true
+          puppetDbEndpoint: puppetDbEndpoint
+          certificate: certificate
+          puppetServerPrivateKey: puppetServerPrivateKey
+          orchestratorEndpoint: orchestratorEndpoint
+          token: token
+          puppetServerEndpoint: puppetServerEndpoint
+          tokenExpiration: 6
+          domain: domain
+          nodeClassifierEndpoint: nodeClassifierEndpoint
+          name: name
+          codeManagerEndpoint: codeManagerEndpoint
+      properties:
+        peIntegrations:
+          description: List of PE integrations (including the token)
+          items:
+            $ref: '#/components/schemas/PuppetEnterpriseCredentialsWithToken'
+          type: array
+      required:
+      - peIntegrations
       title: ListPEIntegrationsWithTokenResponse
-      type: array
+      type: object
     WorkspaceId:
       example: d3
       pattern: ^d\d+

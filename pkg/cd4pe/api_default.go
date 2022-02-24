@@ -148,16 +148,16 @@ EvaluatePermissions Evaluate permissions for a user
  * @param workspaceId
  * @param optional nil or *EvaluatePermissionsOpts - Optional Parameters:
  * @param "EvaluatePermissionsRequest" (optional.Interface of EvaluatePermissionsRequest) -
-@return []bool
+@return Permitted
 */
-func (a *DefaultApiService) EvaluatePermissions(ctx _context.Context, workspaceId string, localVarOptionals *EvaluatePermissionsOpts) ([]bool, *_nethttp.Response, error) {
+func (a *DefaultApiService) EvaluatePermissions(ctx _context.Context, workspaceId string, localVarOptionals *EvaluatePermissionsOpts) (Permitted, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  []bool
+		localVarReturnValue  Permitted
 	)
 
 	// create path and map variables
@@ -227,13 +227,16 @@ func (a *DefaultApiService) EvaluatePermissions(ctx _context.Context, workspaceI
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
-		var v []bool
-		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-		if err != nil {
-			newErr.error = err.Error()
+		if localVarHTTPResponse.StatusCode == 200 {
+			var v Permitted
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -445,16 +448,16 @@ ListPeIntegrationsWithToken List PE integrations for a workspace
 List PE integrations with tokens for a workspace. This is a internal only api.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param workspaceId Identifies a workspace
-@return []PuppetEnterpriseCredentialsWithToken
+@return ListPeIntegrationsWithTokenResponse
 */
-func (a *DefaultApiService) ListPeIntegrationsWithToken(ctx _context.Context, workspaceId string) ([]PuppetEnterpriseCredentialsWithToken, *_nethttp.Response, error) {
+func (a *DefaultApiService) ListPeIntegrationsWithToken(ctx _context.Context, workspaceId string) (ListPeIntegrationsWithTokenResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  []PuppetEnterpriseCredentialsWithToken
+		localVarReturnValue  ListPeIntegrationsWithTokenResponse
 	)
 
 	// create path and map variables
@@ -516,7 +519,7 @@ func (a *DefaultApiService) ListPeIntegrationsWithToken(ctx _context.Context, wo
 			error: localVarHTTPResponse.Status,
 		}
 		if localVarHTTPResponse.StatusCode == 200 {
-			var v []PuppetEnterpriseCredentialsWithToken
+			var v ListPeIntegrationsWithTokenResponse
 			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

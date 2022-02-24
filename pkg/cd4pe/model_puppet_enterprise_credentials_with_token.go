@@ -17,7 +17,7 @@ type PuppetEnterpriseCredentialsWithToken struct {
 	CodeManagerEndpoint        string `json:"codeManagerEndpoint,omitempty"`
 	NodeClassifierEndpoint     string `json:"nodeClassifierEndpoint,omitempty"`
 	OrchestratorEndpoint       string `json:"orchestratorEndpoint,omitempty"`
-	PuppetDBEndpoint           string `json:"puppetDBEndpoint,omitempty"`
+	PuppetDbEndpoint           string `json:"puppetDbEndpoint,omitempty"`
 	PuppetServerEndpoint       string `json:"puppetServerEndpoint,omitempty"`
 	PuppetServerCertificate    string `json:"puppetServerCertificate,omitempty"`
 	PuppetServerPrivateKey     string `json:"puppetServerPrivateKey,omitempty"`

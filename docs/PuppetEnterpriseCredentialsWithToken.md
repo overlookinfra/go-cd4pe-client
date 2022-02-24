@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **CodeManagerEndpoint** | **string** |  | [optional] 
 **NodeClassifierEndpoint** | **string** |  | [optional] 
 **OrchestratorEndpoint** | **string** |  | [optional] 
-**PuppetDBEndpoint** | **string** |  | [optional] 
+**PuppetDbEndpoint** | **string** |  | [optional] 
 **PuppetServerEndpoint** | **string** |  | [optional] 
 **PuppetServerCertificate** | **string** |  | [optional] 
 **PuppetServerPrivateKey** | **string** |  | [optional] 
