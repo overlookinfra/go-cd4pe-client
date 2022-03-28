@@ -154,7 +154,6 @@ func parameterToJson(obj interface{}) (string, error) {
 	return string(jsonBuf), err
 }
 
-
 // callAPI do the request.
 func (c *APIClient) callAPI(request *http.Request) (*http.Response, error) {
 	return c.cfg.HTTPClient.Do(request)
@@ -215,7 +214,10 @@ func (c *APIClient) prepareRequest(
 						return nil, err
 					}
 				} else { // form value
-					w.WriteField(k, iv)
+					err := w.WriteField(k, iv)
+					if err != nil {
+						return nil, err
+					}
 				}
 			}
 		}
@@ -237,7 +239,10 @@ func (c *APIClient) prepareRequest(
 
 		// Set Content-Length
 		headerParams["Content-Length"] = fmt.Sprintf("%d", body.Len())
-		w.Close()
+		err := w.Close()
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	if strings.HasPrefix(headerParams["Content-Type"], "application/x-www-form-urlencoded") && len(formParams) > 0 {
@@ -356,11 +361,16 @@ func (c *APIClient) decode(v interface{}, b []byte, contentType string) (err err
 
 // Add a file to the multipart request
 func addFile(w *multipart.Writer, fieldName, path string) error {
-	file, err := os.Open(path)
+	file, err := os.Open(filepath.Clean(path))
 	if err != nil {
 		return err
 	}
-	defer file.Close()
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+
+		}
+	}(file)
 
 	part, err := w.CreateFormFile(fieldName, filepath.Base(path))
 	if err != nil {
