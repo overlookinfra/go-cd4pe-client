@@ -2,7 +2,7 @@ name: Snyk Scan
 on:
   push:
     branches:
-      - main
+      - master
 jobs:
   security:
     runs-on: ubuntu-latest
